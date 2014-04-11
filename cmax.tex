@@ -1,0 +1,1074 @@
+
+
+
+% Header, overrides base
+
+    % Make sure that the sphinx doc style knows who it inherits from.
+    \def\sphinxdocclass{article}
+
+    % Declare the document class
+    \documentclass[letterpaper,10pt,english]{/opt/local/Library/Frameworks/Python.framework/Versions/3.3/lib/python3.3/site-packages/Sphinx-1.2.1-py3.3.egg/sphinx/texinputs/sphinxhowto}
+
+    % Imports
+    \usepackage[utf8]{inputenc}
+    \DeclareUnicodeCharacter{00A0}{\\nobreakspace}
+    \usepackage[T1]{fontenc}
+    \usepackage{babel}
+    \usepackage{times}
+    \usepackage{import}
+    \usepackage[Bjarne]{/opt/local/Library/Frameworks/Python.framework/Versions/3.3/lib/python3.3/site-packages/Sphinx-1.2.1-py3.3.egg/sphinx/texinputs/fncychap}
+    \usepackage{longtable}
+    \usepackage{/opt/local/Library/Frameworks/Python.framework/Versions/3.3/lib/python3.3/site-packages/Sphinx-1.2.1-py3.3.egg/sphinx/texinputs/sphinx}
+    \usepackage{multirow}
+
+    \usepackage{amsmath}
+    \usepackage{amssymb}
+    \usepackage{ucs}
+    \usepackage{enumerate}
+
+    % Used to make the Input/Output rules follow around the contents.
+    \usepackage{needspace}
+
+    % Pygments requirements
+    \usepackage{fancyvrb}
+    \usepackage{color}
+    % ansi colors additions
+    \definecolor{darkgreen}{rgb}{.12,.54,.11}
+    \definecolor{lightgray}{gray}{.95}
+    \definecolor{brown}{rgb}{0.54,0.27,0.07}
+    \definecolor{purple}{rgb}{0.5,0.0,0.5}
+    \definecolor{darkgray}{gray}{0.25}
+    \definecolor{lightred}{rgb}{1.0,0.39,0.28}
+    \definecolor{lightgreen}{rgb}{0.48,0.99,0.0}
+    \definecolor{lightblue}{rgb}{0.53,0.81,0.92}
+    \definecolor{lightpurple}{rgb}{0.87,0.63,0.87}
+    \definecolor{lightcyan}{rgb}{0.5,1.0,0.83}
+
+    % Needed to box output/input
+    \usepackage{tikz}
+        \usetikzlibrary{calc,arrows,shadows}
+    \usepackage[framemethod=tikz]{mdframed}
+
+    \usepackage{alltt}
+
+    % Used to load and display graphics
+    \usepackage{graphicx}
+    \graphicspath{ {figs/} }
+    \usepackage[Export]{adjustbox} % To resize
+
+    % used so that images for notebooks which have spaces in the name can still be included
+    \usepackage{grffile}
+
+
+    % For formatting output while also word wrapping.
+    \usepackage{listings}
+    \lstset{breaklines=true}
+    \lstset{basicstyle=\small\ttfamily}
+    \def\smaller{\fontsize{9.5pt}{9.5pt}\selectfont}
+
+    %Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    %Set pygments styles if needed...
+    
+        \definecolor{nbframe-border}{rgb}{0.867,0.867,0.867}
+        \definecolor{nbframe-bg}{rgb}{0.969,0.969,0.969}
+        \definecolor{nbframe-in-prompt}{rgb}{0.0,0.0,0.502}
+        \definecolor{nbframe-out-prompt}{rgb}{0.545,0.0,0.0}
+
+        \newenvironment{ColorVerbatim}
+        {\begin{mdframed}[%
+            roundcorner=1.0pt, %
+            backgroundcolor=nbframe-bg, %
+            userdefinedwidth=1\linewidth, %
+            leftmargin=0.1\linewidth, %
+            innerleftmargin=0pt, %
+            innerrightmargin=0pt, %
+            linecolor=nbframe-border, %
+            linewidth=1pt, %
+            usetwoside=false, %
+            everyline=true, %
+            innerlinewidth=3pt, %
+            innerlinecolor=nbframe-bg, %
+            middlelinewidth=1pt, %
+            middlelinecolor=nbframe-bg, %
+            outerlinewidth=0.5pt, %
+            outerlinecolor=nbframe-border, %
+            needspace=0pt
+        ]}
+        {\end{mdframed}}
+        
+        \newenvironment{InvisibleVerbatim}
+        {\begin{mdframed}[leftmargin=0.1\linewidth,innerleftmargin=3pt,innerrightmargin=3pt, userdefinedwidth=1\linewidth, linewidth=0pt, linecolor=white, usetwoside=false]}
+        {\end{mdframed}}
+
+        \renewenvironment{Verbatim}[1][\unskip]
+        {\begin{alltt}\smaller}
+        {\end{alltt}}
+    
+
+    % Help prevent overflowing lines due to urls and other hard-to-break 
+    % entities.  This doesn't catch everything...
+    \sloppy
+
+    % Document level variables
+    \title{cmax}
+    \date{April 11, 2014}
+    \release{}
+    \author{Jelle Aalbers and Chris Tunnell}
+    \renewcommand{\releasename}{}
+
+    % TODO: Add option for the user to specify a logo for his/her export.
+    \newcommand{\sphinxlogo}{}
+
+    % Make the index page of the document.
+    \makeindex
+
+    % Import sphinx document type specifics.
+     
+
+
+% Body
+
+    % Start of the document
+    \begin{document}
+
+        
+            \maketitle
+        
+
+        
+
+
+        
+        \part{$\bar{C}_\text{max}(1 - \alpha, \mu)$}Computing $\bar{C}_\text{max}(C, \mu)$ for optimum interval calculation,
+where $\mu$ is the number of expected events and $1 - \alpha$ is how
+frequently you reject the null hypothesis when it is true.The single-event energy spectrum, that is, the probability density
+function which tells us which energy depositions are likely to occur, is
+independent of the chosen WIMP model -- we always expect a simple
+exponential recoil spectrum.
+
+The number of dark matter events detected does depend on the WIMP mass
+and cross-section. We know, however, that it must follow a Poisson
+distribution, which leaves the Poisson mean (which equals the expected
+number of events) as the only parameter left to estimate. From an upper
+limit on this mean, an upper limit curve in the dark matter mass --
+cross-section plane can be computed.
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  A list\_of\_energies list of reconstructed energy depositions of
+  single events (from here on simply `energies'), either measured during
+  some run of an actual detector, or generated using Monte Carlo.)
+\item
+  An interval is an interval in energy space.
+\item
+  The size of an interval is the fraction of energies expected in that
+  interval. Clearly, this depends on which energy spectrum we assume,
+  but is independent of the Poisson mean we are trying to constrain. By
+  definition this is a number between 0 and 1.
+\item
+  The K-largest interval of a run is the largest interval containing K
+  events in that run. Recall our definition of size: a `large' interval
+  is one which is unusually empty in that run. Clearly k-largest
+  intervals will terminate at (or technically, just before) an observed
+  energy, or at one of the boundaries of our energy space. Again, which
+  interval in a run is the k--largest, depends on our energy spectrum,
+  but not on our Poisson mean.
+\item
+  The extremeness of a K-largest interval is the probability of finding
+  the K-largest interval in a run to be smaller. This clearly does
+  depend on the Poisson mean: if we expect very few events, large gap
+  sizes are more likely. Clearly extremeness is a number between 0 and
+  1; values close to 1 indicate unusually large intervals, that is,
+  usually large (almost-)empty regions in the measured energies. For
+  example, if the extremeness of a k-largest interval in a run is 0.8,
+  that means that 80\% of runs have k-largest intervals which are
+  smaller than the k-largest interval in this run.
+\item
+  The optimum interval statistic of a run is extremity of the most
+  extreme k-largest interval in a run.
+\item
+  The extremeness of the optimum interval statistic is the probability
+  of finding a lower optimum interval statistic, that is, of finding the
+  optimum interval in a run to be less extreme.
+\end{itemize}
+
+The max gap method rejects a theory (places a mean outside the upper
+limit) based on a run if the 0-largest interval (the largest gap) is too
+extreme.
+
+The optimum interval method rejects a theory based on a run if the
+optimum interval statistic is too large.
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  The energy cumulant $\epsilon(E)$ is the fraction of energies expected
+  below the energy $E$. Whatever the (1-normalized) energy distribution
+  $dN/dE$, $dN/d\epsilon$ is uniform{[}0,1{]}, where $0$ and $1$
+  correspond to the boundaries of our experimental range.
+\end{itemize}
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}16{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{functools}
+\PY{k+kn}{from} \PY{n+nn}{scipy.optimize} \PY{k+kn}{import} \PY{n}{brenth}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib.pyplot} \PY{k+kn}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pickle}
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}17{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{kLargestIntervals}\PY{p}{(}\PY{n}{list\PYZus{}of\PYZus{}energies}\PY{p}{,} \PY{n}{spectrumCDF} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Returns a list of the sizes of the K\PYZhy{}largest intervals in that run according to the energy spectrum (given as a CDF).}
+\PY{l+s+sd}{    That is, kLargestIntervals(...)[i] is the size of the largest interval containing i events, where ‘largest’ is defined above.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    * Transform energies to energy cumulants}
+\PY{l+s+sd}{    * Add events at 0 and 1}
+\PY{l+s+sd}{    * Foreach k, compute interval sizes, take max}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{answer} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+    
+    \PY{n}{list\PYZus{}of\PYZus{}energies}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{p}{)}
+    
+    \PY{n}{energy\PYZus{}cumulants} \PY{o}{=} \PY{n}{spectrumCDF}\PY{p}{(}\PY{n}{list\PYZus{}of\PYZus{}energies}\PY{p}{)}
+        
+    \PY{k}{for} \PY{n}{interval\PYZus{}size} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{energy\PYZus{}cumulants}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{interval\PYZus{}size}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{energy\PYZus{}cumulants}\PY{p}{)}\PY{p}{:}
+            \PY{k}{continue}
+            
+        \PY{n}{temp\PYZus{}data} \PY{o}{=} \PY{n}{energy\PYZus{}cumulants}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+        \PY{n}{gap\PYZus{}sizes} \PY{o}{=} \PY{n}{temp\PYZus{}data}\PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{interval\PYZus{}size}\PY{p}{)}\PY{p}{:}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{temp\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{interval\PYZus{}size}\PY{p}{)}\PY{p}{]} 
+
+        \PY{n}{answer}\PY{p}{[}\PY{n}{interval\PYZus{}size}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{gap\PYZus{}sizes}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{answer}
+
+\PY{k}{assert} \PY{n}{kLargestIntervals}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.84}\PY{p}{,} \PY{l+m+mf}{0.85}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{==} \PY{p}{(}\PY{l+m+mf}{0.84} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.2}\PY{p}{)}  \PY{c}{\PYZsh{} test 0}
+\PY{k}{assert} \PY{n}{kLargestIntervals}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.84}\PY{p}{,} \PY{l+m+mf}{0.85}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{==} \PY{p}{(}\PY{l+m+mf}{0.84} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.0}\PY{p}{)}  \PY{c}{\PYZsh{} test 2}
+\PY{k}{assert} \PY{n}{kLargestIntervals}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.85}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mf}{0.84}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{==} \PY{p}{(}\PY{l+m+mf}{0.84} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.0}\PY{p}{)}  \PY{c}{\PYZsh{} test unsorted}
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}18{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{extremenessOfInterval}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{mu}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Returns the extremeness of a k\PYZhy{}largest interval of size, if the poisson mean is mu.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    (Number of itvSizes[mu][k] smaller than size) / mcTrials[mu]}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    x \PYZhy{} also size in above comment}
+\PY{l+s+sd}{    k \PYZhy{} gap (rename k)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c}{\PYZsh{} [0] is because where returns list, where [0] is answer}
+    \PY{k}{if} \PY{n}{k} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{itvSizes}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{p}{:}
+        \PY{k}{return} \PY{l+m+mi}{0}
+    
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{itvSizes}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{x}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{size} \PY{o}{/} \PY{n}{mcTrials}\PY{p}{[}\PY{n}{mu}\PY{p}{]}
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}19{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{optimumItvStatistic}\PY{p}{(}\PY{n}{list\PYZus{}of\PYZus{}energies}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{spectrumCDF} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Returns the optimum interval statistic of the run.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Max of extremenssOfInterval\PYZsq{}s}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{[}\PY{n}{extremenessOfInterval}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{mu}\PY{p}{)} \PY{k}{for} \PY{n}{k}\PY{p}{,} \PY{n}{x} \PY{o+ow}{in} \PY{n}{kLargestIntervals}\PY{p}{(}\PY{n}{list\PYZus{}of\PYZus{}energies}\PY{p}{,} \PY{n}{spectrumCDF}\PY{p}{)}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}20{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{extremenessOfOptItvStat}\PY{p}{(}\PY{n}{stat}\PY{p}{,} \PY{n}{mu}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Returns the extremeness of the optimum interval statistic stat, given mu}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    (Number of optItvs[mu] smaller than stat) / mcTrials[mu]}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{optItvs}\PY{p}{[}\PY{n}{mu}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{stat}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{size} \PY{o}{/} \PY{n}{mcTrials}\PY{p}{[}\PY{n}{mu}\PY{p}{]}
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}26{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{optItvUpperLimit}\PY{p}{(}\PY{n}{list\PYZus{}of\PYZus{}energies}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{spectrumCDF} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{p}{,}
+                     \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Returns the c\PYZhy{} confidence upper limit on mu using optimum interval}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    For which mu is extremenessOfOptItvStat( optimumItvStatistic(run), mu ) = c}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    c \PYZhy{} e.g., 0.9}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{list\PYZus{}of\PYZus{}energies}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{spectrumCDF}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+        \PY{n}{generate\PYZus{}table}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n}{optimumItvStatistic}\PY{p}{(}\PY{n}{list\PYZus{}of\PYZus{}energies}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{spectrumCDF}\PY{p}{)}
+        \PY{n}{prob} \PY{o}{=} \PY{n}{extremenessOfOptItvStat}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{mu}\PY{p}{)}
+        \PY{k}{return} \PY{n}{prob} \PY{o}{\PYZhy{}} \PY{n}{c}
+
+    \PY{n}{mu} \PY{o}{=} \PY{l+m+mi}{0}
+
+    \PY{k}{for} \PY{n}{mu} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{2} \PY{o}{*} \PY{n}{list\PYZus{}of\PYZus{}energies}\PY{o}{.}\PY{n}{size}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{f}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{list\PYZus{}of\PYZus{}energies}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{spectrumCDF}\PY{p}{,} \PY{n}{n}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{k}{print}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Found seed mu=}\PY{l+s+si}{\PYZpc{}f}\PY{l+s}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{mu}\PY{p}{)}
+            \PY{k}{break}
+        
+    \PY{k}{try}\PY{p}{:}
+        \PY{n}{xsec} \PY{o}{=} \PY{n}{brenth}\PY{p}{(}\PY{n}{f}\PY{p}{,} \PY{n}{mu} \PY{o}{\PYZhy{}} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{mu} \PY{o}{+} \PY{l+m+mi}{5}\PY{p}{,}
+                  \PY{n}{args}\PY{o}{=}\PY{p}{(}\PY{n}{list\PYZus{}of\PYZus{}energies}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{spectrumCDF}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{,}
+                  \PY{n}{xtol}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}2}\PY{p}{)} 
+        \PY{k}{print}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Improved xsec:}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{xsec}\PY{p}{)}
+    \PY{k}{except}\PY{p}{:}
+        \PY{k}{print}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{ERROR: could not minimize}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{n}{mu}\PY{p}{)}
+        \PY{k}{return} \PY{n}{mu}
+    \PY{k}{return} \PY{n}{xsec}
+
+
+
+    
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}22{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{generate\PYZus{}trial\PYZus{}experiment}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+    \PY{n}{trials} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+    \PY{k}{for} \PY{n}{index} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+        \PY{n}{this\PYZus{}mu} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{poisson}\PY{p}{(}\PY{n}{mu}\PY{p}{)}
+        
+        \PY{n}{rand\PYZus{}numbers} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{n}{this\PYZus{}mu}\PY{p}{)}
+        \PY{n}{rand\PYZus{}numbers} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{rand\PYZus{}numbers}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{rand\PYZus{}numbers}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{p}{)}
+        \PY{n}{trials}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{rand\PYZus{}numbers}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{trials}
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+\section{Monte Carlo for populating itvSizes{[}$\mu${]}{[}$k${]} and
+optItvs{[}$\mu${]}}
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}36{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{get\PYZus{}filename}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{l+s}{\PYZsq{}}\PY{l+s}{saved\PYZus{}intervals.p}\PY{l+s}{\PYZsq{}}
+
+\PY{k}{def} \PY{n+nf}{load\PYZus{}table\PYZus{}from\PYZus{}disk}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{global} \PY{n}{itvSizes}
+    \PY{k}{global} \PY{n}{optItvs}
+    \PY{k}{global} \PY{n}{mcTrials}
+    
+    \PY{k}{if} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{n}{get\PYZus{}filename}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{f} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{n}{get\PYZus{}filename}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{rb}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{itvSizes} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+        \PY{n}{optItvs} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+        \PY{n}{mcTrials} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+        \PY{n}{f}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+
+    
+\PY{k}{def} \PY{n+nf}{write\PYZus{}table\PYZus{}to\PYZus{}disk}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{f} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{n}{get\PYZus{}filename}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{wb}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{pickle}\PY{o}{.}\PY{n}{dump}\PY{p}{(}\PY{n}{itvSizes}\PY{p}{,} \PY{n}{f}\PY{p}{)}
+    \PY{n}{pickle}\PY{o}{.}\PY{n}{dump}\PY{p}{(}\PY{n}{optItvs}\PY{p}{,} \PY{n}{f}\PY{p}{)}
+    \PY{n}{pickle}\PY{o}{.}\PY{n}{dump}\PY{p}{(}\PY{n}{mcTrials}\PY{p}{,} \PY{n}{f}\PY{p}{)}
+    \PY{n}{f}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{itvSizes} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{optItvs} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{mcTrials} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{load\PYZus{}table\PYZus{}from\PYZus{}disk}\PY{p}{(}\PY{p}{)}    
+    
+\PY{k}{def} \PY{n+nf}{generate\PYZus{}table}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}    \PYZsh{}Generate trial runs\PYZdq{}\PYZdq{}\PYZdq{}}    
+    \PY{k}{if} \PY{n}{mu} \PY{o+ow}{in} \PY{n}{mcTrials} \PY{o+ow}{and} \PY{n}{mcTrials}\PY{p}{[}\PY{n}{mu}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{n}\PY{p}{:}
+        \PY{k}{return}
+
+    \PY{k}{print}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Generating}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{n}{mu}\PY{p}{)}
+
+    \PY{n}{mcTrials}\PY{p}{[}\PY{n}{mu}\PY{p}{]} \PY{o}{=} \PY{n}{n}
+    \PY{n}{trials} \PY{o}{=} \PY{n}{generate\PYZus{}trial\PYZus{}experiment}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{mcTrials}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{p}{)}
+
+    \PY{n}{itvSizes}\PY{p}{[}\PY{n}{mu}\PY{p}{]} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+    \PY{n}{optItvs}\PY{p}{[}\PY{n}{mu}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+    \PY{k}{for} \PY{n}{trial} \PY{o+ow}{in} \PY{n}{trials}\PY{p}{:}
+        \PY{n}{intermediate\PYZus{}result} \PY{o}{=} \PY{n}{kLargestIntervals}\PY{p}{(}\PY{n}{trial}\PY{p}{)}
+        
+        \PY{k}{for} \PY{n}{k}\PY{p}{,} \PY{n}{v} \PY{o+ow}{in} \PY{n}{intermediate\PYZus{}result}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{k} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{itvSizes}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{p}{:}
+                \PY{n}{itvSizes}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+            \PY{n}{itvSizes}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{v}\PY{p}{)}
+    
+    \PY{c}{\PYZsh{} Numpy\PYZhy{}ize it}
+    \PY{k}{for} \PY{n}{k}\PY{p}{,} \PY{n}{array} \PY{o+ow}{in} \PY{n}{itvSizes}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{itvSizes}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{array}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{trial} \PY{o+ow}{in} \PY{n}{trials}\PY{p}{:}
+        \PY{n}{optItvs}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{optimumItvStatistic}\PY{p}{(}\PY{n}{trial}\PY{p}{,} \PY{n}{mu}\PY{p}{)}\PY{p}{)}
+        
+    \PY{c}{\PYZsh{} Numpy\PYZhy{}ize it}
+    \PY{n}{optItvs}\PY{p}{[}\PY{n}{mu}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{optItvs}\PY{p}{[}\PY{n}{mu}\PY{p}{]}\PY{p}{)}
+    
+    
+
+
+\PY{k}{def} \PY{n+nf}{cache\PYZus{}values}\PY{p}{(}\PY{n}{my\PYZus{}max}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{my\PYZus{}max}\PY{p}{)}\PY{p}{:}
+        \PY{n}{generate\PYZus{}table}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+    \PY{n}{write\PYZus{}table\PYZus{}to\PYZus{}disk}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}52{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{plot\PYZus{}something}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{x}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{p}{]}
+    
+    \PY{k}{for} \PY{n}{mu} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mf}{3.5}\PY{p}{,} \PY{l+m+mf}{6.5}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+        \PY{n}{generate\PYZus{}table}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{l+m+mi}{10000}\PY{p}{)}
+        \PY{n}{x}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{mu}\PY{p}{)}
+        
+        \PY{n}{a} \PY{o}{=} \PY{n}{brenth}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{extremenessOfOptItvStat}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{mu}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.9}\PY{p}{,}
+                   \PY{l+m+mi}{0}\PY{p}{,}
+                   \PY{l+m+mi}{1}\PY{p}{,}
+                   \PY{n}{xtol}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}2}\PY{p}{)}
+        
+        \PY{n}{y}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+        
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{xscale}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{log}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{l+m+mf}{3.5}\PY{p}{,} \PY{l+m+mf}{6.5}\PY{p}{)}
+    
+\PY{c}{\PYZsh{}plot\PYZus{}something()}
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+
+    
+
+        % If the first block is an image, minipage the image.  Else
+        % request a certain amount of space for the input text.
+        \needspace{4\baselineskip}
+        
+        
+
+            % Add document contents.
+            
+                \begin{InvisibleVerbatim}
+                \vspace{-0.5\baselineskip}
+    \begin{center}
+    \includegraphics[max size={\textwidth}{\textheight}]{cmax_files/cmax_12_0.png}
+    \par
+    \end{center}
+    
+            \end{InvisibleVerbatim}
+            
+        
+    
+
+
+    % Make sure that atleast 4 lines are below the HR
+    \needspace{4\baselineskip}
+
+    
+        \vspace{6pt}
+        \makebox[0.1\linewidth]{\smaller\hfill\tt\color{nbframe-in-prompt}In\hspace{4pt}{[}71{]}:\hspace{4pt}}\\*
+        \vspace{-2.65\baselineskip}
+        \begin{ColorVerbatim}
+            \vspace{-0.7\baselineskip}
+            \begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{simple\PYZus{}test\PYZus{}uniform}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{test\PYZus{}list\PYZus{}of\PYZus{}energies} \PY{o}{=} \PY{n}{generate\PYZus{}trial\PYZus{}experiment}\PY{p}{(}\PY{n}{mu}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+    \PY{k}{print}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}list\PYZus{}of\PYZus{}energies}\PY{p}{)}\PY{p}{)}
+    \PY{n}{answer} \PY{o}{=} \PY{n}{optItvUpperLimit}\PY{p}{(}\PY{n}{test\PYZus{}list\PYZus{}of\PYZus{}energies}\PY{p}{,} \PY{l+m+mf}{0.9}\PY{p}{)}
+\end{Verbatim}
+
+            
+                \vspace{-0.2\baselineskip}
+            
+        \end{ColorVerbatim}
+    
+
+    
+
+        % If the first block is an image, minipage the image.  Else
+        % request a certain amount of space for the input text.
+        \needspace{4\baselineskip}
+        
+        
+
+            % Add document contents.
+            
+                \begin{InvisibleVerbatim}
+                \vspace{-0.5\baselineskip}
+\begin{alltt}107
+testing mu=3.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=4.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=5.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=6.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=7.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=8.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=9.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=10.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=11.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=12.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=13.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=14.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=15.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=16.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=17.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=18.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=19.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=20.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=21.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=22.000000
+\ldots 0.000000, so continuing\ldots
+testing mu=23.000000
+Generating 23
+\ldots 0.000000, so continuing\ldots
+testing mu=24.000000
+Generating 24
+\ldots 0.000000, so continuing\ldots
+testing mu=25.000000
+Generating 25
+\ldots 0.000000, so continuing\ldots
+testing mu=26.000000
+Generating 26
+\ldots 0.000000, so continuing\ldots
+testing mu=27.000000
+Generating 27
+\ldots 0.000000, so continuing\ldots
+testing mu=28.000000
+Generating 28
+\ldots 0.000000, so continuing\ldots
+testing mu=29.000000
+Generating 29
+\ldots 0.000000, so continuing\ldots
+testing mu=30.000000
+Generating 30
+\ldots 0.000000, so continuing\ldots
+testing mu=31.000000
+Generating 31
+\ldots 0.000000, so continuing\ldots
+testing mu=32.000000
+Generating 32
+\ldots 0.000000, so continuing\ldots
+testing mu=33.000000
+Generating 33
+\ldots 0.000000, so continuing\ldots
+testing mu=34.000000
+Generating 34
+\ldots 0.000000, so continuing\ldots
+testing mu=35.000000
+Generating 35
+\ldots 0.000000, so continuing\ldots
+testing mu=36.000000
+Generating 36
+\ldots 0.000000, so continuing\ldots
+testing mu=37.000000
+Generating 37
+\ldots 0.000000, so continuing\ldots
+testing mu=38.000000
+Generating 38
+\ldots 0.000000, so continuing\ldots
+testing mu=39.000000
+Generating 39
+\ldots 0.000000, so continuing\ldots
+testing mu=40.000000
+Generating 40
+\ldots 0.000000, so continuing\ldots
+testing mu=41.000000
+Generating 41
+\ldots 0.000000, so continuing\ldots
+testing mu=42.000000
+Generating 42
+\ldots 0.000000, so continuing\ldots
+testing mu=43.000000
+Generating 43
+\ldots 0.000000, so continuing\ldots
+testing mu=44.000000
+Generating 44
+\ldots 0.000000, so continuing\ldots
+testing mu=45.000000
+Generating 45
+\ldots 0.000000, so continuing\ldots
+testing mu=46.000000
+Generating 46
+\ldots 0.000000, so continuing\ldots
+testing mu=47.000000
+Generating 47
+\ldots 0.000000, so continuing\ldots
+testing mu=48.000000
+Generating 48
+\ldots 0.000000, so continuing\ldots
+testing mu=49.000000
+Generating 49
+\ldots 0.000000, so continuing\ldots
+testing mu=50.000000
+Generating 50
+\ldots 0.000000, so continuing\ldots
+testing mu=51.000000
+Generating 51
+\ldots 0.001000, so continuing\ldots
+testing mu=52.000000
+Generating 52
+\ldots 0.000000, so continuing\ldots
+testing mu=53.000000
+Generating 53
+\ldots 0.000000, so continuing\ldots
+testing mu=54.000000
+Generating 54
+\ldots 0.002000, so continuing\ldots
+testing mu=55.000000
+Generating 55
+\ldots 0.001000, so continuing\ldots
+testing mu=56.000000
+Generating 56
+\ldots 0.002000, so continuing\ldots
+testing mu=57.000000
+Generating 57
+\ldots 0.003000, so continuing\ldots
+testing mu=58.000000
+Generating 58
+\ldots 0.000000, so continuing\ldots
+testing mu=59.000000
+Generating 59
+\ldots 0.005000, so continuing\ldots
+testing mu=60.000000
+Generating 60
+\ldots 0.002000, so continuing\ldots
+testing mu=61.000000
+Generating 61
+\ldots 0.007000, so continuing\ldots
+testing mu=62.000000
+Generating 62
+\ldots 0.006000, so continuing\ldots
+testing mu=63.000000
+Generating 63
+\ldots 0.009000, so continuing\ldots
+testing mu=64.000000
+Generating 64
+\ldots 0.013000, so continuing\ldots
+testing mu=65.000000
+Generating 65
+\ldots 0.012000, so continuing\ldots
+testing mu=66.000000
+Generating 66
+\ldots 0.031000, so continuing\ldots
+testing mu=67.000000
+Generating 67
+\ldots 0.036000, so continuing\ldots
+testing mu=68.000000
+Generating 68
+\ldots 0.034000, so continuing\ldots
+testing mu=69.000000
+Generating 69
+\ldots 0.038000, so continuing\ldots
+testing mu=70.000000
+Generating 70
+\ldots 0.043000, so continuing\ldots
+testing mu=71.000000
+Generating 71
+\ldots 0.054000, so continuing\ldots
+testing mu=72.000000
+Generating 72
+\ldots 0.059000, so continuing\ldots
+testing mu=73.000000
+Generating 73
+\ldots 0.052000, so continuing\ldots
+testing mu=74.000000
+Generating 74
+\ldots 0.072000, so continuing\ldots
+testing mu=75.000000
+Generating 75
+\ldots 0.094000, so continuing\ldots
+testing mu=76.000000
+Generating 76
+\ldots 0.101000, so continuing\ldots
+testing mu=77.000000
+Generating 77
+\ldots 0.121000, so continuing\ldots
+testing mu=78.000000
+Generating 78
+\ldots 0.144000, so continuing\ldots
+testing mu=79.000000
+Generating 79
+\ldots 0.159000, so continuing\ldots
+testing mu=80.000000
+Generating 80
+\ldots 0.177000, so continuing\ldots
+testing mu=81.000000
+Generating 81
+\ldots 0.192000, so continuing\ldots
+testing mu=82.000000
+Generating 82
+\ldots 0.221000, so continuing\ldots
+testing mu=83.000000
+Generating 83
+\ldots 0.232000, so continuing\ldots
+testing mu=84.000000
+Generating 84
+\ldots 0.268000, so continuing\ldots
+testing mu=85.000000
+Generating 85
+\ldots 0.257000, so continuing\ldots
+testing mu=86.000000
+Generating 86
+\ldots 0.270000, so continuing\ldots
+testing mu=87.000000
+Generating 87
+\ldots 0.310000, so continuing\ldots
+testing mu=88.000000
+Generating 88
+\ldots 0.343000, so continuing\ldots
+testing mu=89.000000
+Generating 89
+\ldots 0.391000, so continuing\ldots
+testing mu=90.000000
+Generating 90
+\ldots 0.455000, so continuing\ldots
+testing mu=91.000000
+Generating 91
+\ldots 0.418000, so continuing\ldots
+testing mu=92.000000
+Generating 92
+\ldots 0.467000, so continuing\ldots
+testing mu=93.000000
+Generating 93
+\ldots 0.492000, so continuing\ldots
+testing mu=94.000000
+Generating 94
+\ldots 0.523000, so continuing\ldots
+testing mu=95.000000
+Generating 95
+\ldots 0.528000, so continuing\ldots
+testing mu=96.000000
+Generating 96
+\ldots 0.536000, so continuing\ldots
+testing mu=97.000000
+Generating 97
+\ldots 0.572000, so continuing\ldots
+testing mu=98.000000
+Generating 98
+\ldots 0.576000, so continuing\ldots
+testing mu=99.000000
+Generating 99
+\ldots 0.644000, so continuing\ldots
+testing mu=100.000000
+Generating 100
+\ldots 0.644000, so continuing\ldots
+testing mu=101.000000
+Generating 101
+\ldots 0.704000, so continuing\ldots
+testing mu=102.000000
+Generating 102
+\ldots 0.663000, so continuing\ldots
+testing mu=103.000000
+Generating 103
+\ldots 0.698000, so continuing\ldots
+testing mu=104.000000
+Generating 104
+\ldots 0.708000, so continuing\ldots
+testing mu=105.000000
+Generating 105
+\ldots 0.726000, so continuing\ldots
+testing mu=106.000000
+Generating 106
+\ldots 0.748000, so continuing\ldots
+testing mu=107.000000
+Generating 107
+\ldots 0.772000, so continuing\ldots
+testing mu=108.000000
+Generating 108
+\ldots 0.802000, so continuing\ldots
+testing mu=109.000000
+Generating 109
+\ldots 0.806000, so continuing\ldots
+testing mu=110.000000
+Generating 110
+\ldots 0.832000, so continuing\ldots
+testing mu=111.000000
+Generating 111
+\ldots 0.844000, so continuing\ldots
+testing mu=112.000000
+Generating 112
+\ldots 0.832000, so continuing\ldots
+testing mu=113.000000
+Generating 113
+\ldots 0.854000, so continuing\ldots
+testing mu=114.000000
+Generating 114
+\ldots 0.877000, so continuing\ldots
+testing mu=115.000000
+Generating 115
+\ldots 0.838000, so continuing\ldots
+testing mu=116.000000
+Generating 116
+\ldots 0.899000, so continuing\ldots
+testing mu=117.000000
+Generating 117
+\ldots 0.882000, so continuing\ldots
+testing mu=118.000000
+Generating 118
+Found 118.000000 -> 0.902000
+\end{alltt}
+
+            \end{InvisibleVerbatim}
+            
+        
+    
+
+        
+
+        \renewcommand{\indexname}{Index}
+        \printindex
+
+    % End of document
+    \end{document}
+
+
