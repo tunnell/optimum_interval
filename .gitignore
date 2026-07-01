@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.venv/
+venv/
+
+# Monte-Carlo cache (regenerate with reproduce_figures.py)
+saved_intervals.p
+*.p
+
+# Paper source & anything derived from it (copyright S. Yellin / APS) -- kept
+# locally for side-by-side verification, not redistributed in this repo.
+0203002v2.pdf
+arXiv-physics0203002v2.tar.gz
+paper_figs/
+figures/paper_*.png
+figures/*side_by_side*.png
