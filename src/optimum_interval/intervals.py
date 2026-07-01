@@ -81,7 +81,7 @@ def cumulant_points(
     """Map observed events to cumulant space and append the range endpoints.
 
     This is the transform every *real* measurement must undergo before calling
-    :func:`k_largest_intervals`: apply the (normalised) spectrum CDF so the
+    :func:`k_largest_intervals`: apply the (normalized) spectrum CDF so the
     signal becomes uniform on ``[0, 1]``, then add the experimental-range
     boundaries 0 and 1 (which act as interval delimiters exactly like events).
 

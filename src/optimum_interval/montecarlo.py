@@ -105,7 +105,7 @@ class OptimumIntervalTable:
         # that trial's k-largest size.  extremeness uses strict "<" and divides
         # by the total trial count n (Yellin's denominator convention: a trial
         # with too few events to have a k-largest interval does not count as
-        # "smaller").  Vectorised per k via searchsorted, then scattered.
+        # "smaller").  Vectorized per k via searchsorted, then scattered.
         opt = np.zeros(n)
         for k, obs in itv_sizes.items():
             reference = np.sort(obs)

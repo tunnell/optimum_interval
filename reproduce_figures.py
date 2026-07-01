@@ -176,7 +176,7 @@ def bar_p_max(table, mu: float, n: int, confidence: float = 0.9) -> float:
         sizes = k_largest_intervals(trial)
         ks = np.fromiter(sizes.keys(), dtype=int)
         xs = mu * np.fromiter(sizes.values(), dtype=float)
-        p_maxes[i] = poisson.sf(ks, xs).max()   # vectorised over k
+        p_maxes[i] = poisson.sf(ks, xs).max()   # vectorized over k
     return float(np.quantile(p_maxes, confidence))
 
 
@@ -340,7 +340,7 @@ def explanatory_figures(seed: int) -> None:
     e0, e_max, mu = 10.0, 50.0, 5.0
     norm = 1.0 - np.exp(-e_max / e0)
 
-    def cdf(e):  # normalised exponential CDF -> uniform [0, 1]
+    def cdf(e):  # normalized exponential CDF -> uniform [0, 1]
         return (1.0 - np.exp(-e / e0)) / norm
 
     events_E = np.array([4.0, 9.0, 22.0, 41.0])

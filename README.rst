@@ -38,7 +38,7 @@ Quick start
    table = OptimumIntervalTable(rng=rng)
 
    # Observed events, already mapped to cumulant space (uniform [0, 1]) via the
-   # signal CDF.  For raw energies, pass spectrum_cdf=your_normalised_cdf.
+   # signal CDF.  For raw energies, pass spectrum_cdf=your_normalized_cdf.
    events = np.sort(rng.random(8))
 
    mu_limit = table.upper_limit(events, confidence=0.9, n=2000)
@@ -90,16 +90,14 @@ distribution reproduces the analytic :math:`C_0`.
 Package layout
 ==============
 
-===============================  ===========================================
-Path                             Contents
-===============================  ===========================================
-``src/optimum_interval/``        the library
-``  intervals.py``               pure interval geometry (k-largest, cumulants)
-``  analytic.py``                analytic :math:`C_0`, :math:`x_0`, Poisson & max-gap limits
-``  montecarlo.py``              ``OptimumIntervalTable`` + upper-limit solver
-``  comparison.py``              ``ComparisonEngine`` for method comparison (Figs. 3-4)
-``  plotting.py``                Fig. 2 helpers
-``reproduce_figures.py``         regenerate & verify every figure
-``EXPLANATION.md``               the derivation / how-to-reimplement guide
-``tests/``                       pytest suite
-===============================  ===========================================
+::
+
+   src/optimum_interval/      the library package
+     intervals.py             pure interval geometry (k-largest, cumulants)
+     analytic.py              analytic C0, x0, Poisson & max-gap limits
+     montecarlo.py            OptimumIntervalTable + upper-limit solver
+     comparison.py            ComparisonEngine for method comparison (Figs. 3-4)
+     plotting.py              Fig. 2 helpers
+   reproduce_figures.py       regenerate & verify every figure
+   EXPLANATION.md             the derivation / how-to-reimplement guide
+   tests/                     pytest suite

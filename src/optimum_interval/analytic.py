@@ -21,9 +21,9 @@ We use this as the ground-truth validator for the ``k = 0`` Monte Carlo (see
 
 Units note
 ----------
-The Monte-Carlo code works in normalised cumulant space where interval sizes
+The Monte-Carlo code works in normalized cumulant space where interval sizes
 are fractions of ``[0, 1]``.  Yellin's :math:`x` is in *expected events*.  A
-normalised gap fraction ``f`` corresponds to ``x = mu * f`` expected events, so
+normalized gap fraction ``f`` corresponds to ``x = mu * f`` expected events, so
 ``c0(mu * f, mu)`` is what should equal the empirical CDF of the MC gap
 fractions.
 """
@@ -75,7 +75,7 @@ def _c0_scalar(x: float, mu: float) -> float:
     return float(np.clip(total, 0.0, 1.0))  # absorb tiny round-off past [0, 1]
 
 
-# Vectorised over x (and mu) while keeping the clear scalar core above.
+# Vectorized over x (and mu) while keeping the clear scalar core above.
 _c0_vec = np.vectorize(_c0_scalar, otypes=[float])
 
 

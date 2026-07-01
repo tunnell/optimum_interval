@@ -4,7 +4,7 @@ A small, dependency-light implementation of the method of S. Yellin,
 *"Finding an Upper Limit in the Presence of Unknown Background"*,
 Phys. Rev. **D66** (2002) 032005 (arXiv:physics/0203002).
 
-The method sets a frequentist upper limit on a signal normalisation (the
+The method sets a frequentist upper limit on a signal normalization (the
 Poisson mean ``mu`` of expected events) using only the known signal *shape*,
 without a model of the background and without binning.  See ``EXPLANATION.md``
 for a physicist-oriented walk-through and derivation.

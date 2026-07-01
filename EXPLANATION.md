@@ -12,7 +12,7 @@ this repository's `src/optimum_interval/`.
 
 ## TL;DR
 
-You want a frequentist one-sided upper limit on a signal normalisation — for a
+You want a frequentist one-sided upper limit on a signal normalization — for a
 direct-detection experiment, the WIMP–nucleon cross section $\sigma$, which
 fixes the expected number of signal events $\mu$. Your problem: there may be a
 background you cannot model or subtract. Any method that needs the likelihood
@@ -26,12 +26,12 @@ proposed signal predicts, is evidence that the proposed signal is **too strong**
 is too empty" into a test statistic, calibrate that statistic with a background-
 free Monte Carlo, and you get a **true (if conservative) classical upper limit**
 that (i) needs only the signal *shape*, (ii) uses no binning, and (iii) is
-invariant under any reparametrisation of the observable.
+invariant under any reparametrization of the observable.
 
 Two variants:
 - **Maximum gap** ($C_0$): use the single largest event-free gap. Has a
   closed-form calibration (Eq. 2) — no Monte Carlo needed.
-- **Optimum interval** ($C_\text{max}$): generalise "gap with 0 events" to
+- **Optimum interval** ($C_\text{max}$): generalize "gap with 0 events" to
   "interval with $\le n$ events", and let the data pick the most constraining
   interval. Stronger, but needs Monte Carlo. This is the method the repo's name
   refers to.
@@ -60,7 +60,7 @@ Two variants:
 Events lie along a one-dimensional observable $E$. For a proposed cross section
 $\sigma$ you know the **shape** $dN/dE$ of the signal (astrophysics × form
 factor × detector response), and $\mu(\sigma)=\int dN/dE\,dE \propto \sigma$ is
-the only free normalisation. There may additionally be a background whose
+the only free normalization. There may additionally be a background whose
 per-unit-$E$ rate is non-negative but otherwise **unknown and non-subtractable**.
 
 Write the likelihood of the observed energies $\{E_i\}$:
@@ -96,14 +96,14 @@ background, and why it uses only the signal shape.
 ## 2. The cumulant transform: everything becomes uniform
 
 The engine of the method is the **probability-integral transform**. Define the
-normalised cumulant
+normalized cumulant
 
 $$
 \epsilon(E)=\frac{1}{\mu}\int_{E_\text{min}}^{E}\frac{dN}{dE'}\,dE' \in[0,1].
 $$
 
 If signal events are drawn from $dN/dE$, then $\epsilon(E)$ is **Uniform$[0,1]$**,
-whatever the shape of $dN/dE$. Equivalently, in the unnormalised coordinate
+whatever the shape of $dN/dE$. Equivalently, in the unnormalized coordinate
 $z(E)=\int_{E_\text{min}}^E dN/dE'\,dE'$ running from $0$ to $\mu$, signal events
 are uniform with **unit density**, and the total length of the range equals
 $\mu$.
@@ -123,7 +123,7 @@ Two consequences do all the work:
 **Worked mini-example** (this is `explanatory_figures()` in
 `reproduce_figures.py`; see `figures/explain_cumulant_transform.png`). Take an
 exponential recoil spectrum $dN/dE\propto e^{-E/E_0}$ with $E_0=10$ keV on
-$[0,50]$ keV, normalised so $\mu=5$ expected events. Its CDF is
+$[0,50]$ keV, normalized so $\mu=5$ expected events. Its CDF is
 
 $$
 \epsilon(E)=\frac{1-e^{-E/E_0}}{1-e^{-E_\text{max}/E_0}} .
@@ -198,7 +198,7 @@ simulation (§8, `figures/c0_validation.png`).
 ## 4. From gaps to optimum intervals: $C_\text{max}$
 
 When there are enough events that even the largest gap is not very constraining,
-generalise: instead of intervals with **0** events, consider intervals with
+generalize: instead of intervals with **0** events, consider intervals with
 $\le n$ events. Define
 
 $$
@@ -292,7 +292,7 @@ For a fixed $\mu$, the calibration distribution is built by
 2. **Inner tables.** For each trial compute all $k$-largest sizes; collect them
    into `itv_sizes[mu][k]` (per-$k$ arrays across trials).
 3. **Statistic per trial.** `opt_itvs[mu][t]` = $C_\text{max}$ of trial $t$ =
-   $\max_k$ (empirical CDF of size$_k$). Computed with a vectorised
+   $\max_k$ (empirical CDF of size$_k$). Computed with a vectorized
    `searchsorted` and `np.maximum.at`.
 4. **Threshold.** $\bar C_\text{max}(C,\mu)$ = the $C$ quantile of `opt_itvs[mu]`
    (`bar_c_max`).
@@ -356,7 +356,7 @@ root find.
 A self-contained recipe. Each step names the function here that implements it.
 
 1. **Signal model.** From the proposed $\sigma$ and mass, build $dN/dE$, its
-   normalised CDF $\epsilon(E)$, and $\mu=\int dN/dE$. *(User-supplied
+   normalized CDF $\epsilon(E)$, and $\mu=\int dN/dE$. *(User-supplied
    `spectrum_cdf`.)*
 2. **Transform the data.** $\epsilon_i=\epsilon(E_i)$; sort; prepend $0$, append
    $1$. *(`cumulant_points`.)*
