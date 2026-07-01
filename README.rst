@@ -25,14 +25,10 @@ Install
 
 .. code-block:: bash
 
-   pip install optimum-interval
-
-For development (tests, linting, figure reproduction):
-
-.. code-block:: bash
-
    python -m venv .venv && source .venv/bin/activate
    pip install -e ".[dev]"
+
+Not yet on PyPI (tracked in `#2 <https://github.com/tunnell/optimum_interval/issues/2>`_).
 
 Quick start
 ===========
