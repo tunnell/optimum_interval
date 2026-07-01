@@ -32,9 +32,9 @@ from __future__ import annotations
 
 import numpy as np
 from scipy.optimize import brentq
-from scipy.special import gammaln
+from scipy.special import gammaincinv, gammaln
 
-__all__ = ["c0", "x0"]
+__all__ = ["c0", "x0", "poisson_upper_limit", "max_gap_upper_limit"]
 
 
 # Above this many terms the maximum gap is far smaller than the typical gap, so
@@ -131,3 +131,43 @@ def x0(confidence: float, mu: float) -> float:
         )
     # c0 is 0 at x->0 and c_max at x=mu, so the root is bracketed by (tiny, mu).
     return float(brentq(lambda x: _c0_scalar(x, mu) - confidence, 1e-12, mu))
+
+
+def poisson_upper_limit(n_observed: int, confidence: float = 0.9) -> float:
+    r"""Classical Poisson upper limit on the mean given ``n_observed`` events.
+
+    The standard total-count limit: ``mu_up`` is the mean for which a fraction
+    ``confidence`` of experiments would see *more* than ``n_observed`` events,
+    i.e. :math:`\sum_{k=0}^{n} e^{-\mu_\text{up}}\mu_\text{up}^k/k! = 1-C`.  This
+    is the inverse incomplete Gamma function ``gammaincinv(n+1, confidence)``.
+    (Used only for the method-comparison figures; e.g. ``n=0`` gives ``2.3026``.)
+    """
+    return float(gammaincinv(n_observed + 1, confidence))
+
+
+def max_gap_upper_limit(max_gap_fraction: float, confidence: float = 0.9) -> float:
+    r"""Maximum-gap (:math:`C_0`) upper limit on ``mu`` for one experiment.
+
+    Solve :math:`C_0(\mu\,f, \mu) = C` for ``mu``, where ``f`` is the observed
+    maximum-gap size as a *fraction* of the range (its expected-event size is
+    ``mu * f``).  ``C_0`` increases with ``mu`` here, so the root is unique.
+
+    Parameters
+    ----------
+    max_gap_fraction : float
+        Largest gap between adjacent events (including the range endpoints) in
+        cumulant space, in ``[0, 1]``.
+    confidence : float, optional
+        Confidence level, e.g. ``0.9``.
+    """
+    f = float(max_gap_fraction)
+    if not 0.0 < f <= 1.0:
+        raise ValueError(f"max_gap_fraction must be in (0, 1]; got {f}")
+
+    def g(mu: float) -> float:
+        return _c0_scalar(mu * f, mu) - confidence
+
+    hi = max(1.0, 1.0 / f)
+    while g(hi) < 0.0 and hi < 1e6:
+        hi *= 2.0
+    return float(brentq(g, 1e-9, hi))

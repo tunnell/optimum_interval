@@ -57,20 +57,25 @@ Reproducing the paper's figures
 
 .. code-block:: bash
 
-   python reproduce_figures.py --quick   # ~3 min, low statistics
-   python reproduce_figures.py --full    # ~10 min, publication statistics
+   python reproduce_figures.py --quick        # ~5 min, low statistics
+   python reproduce_figures.py --full         # publication statistics (~2 h)
+   python reproduce_figures.py --only compare # just Figs. 3 & 4 (the slow ones)
 
-This regenerates, into ``figures/``:
+This regenerates **all five paper figures**, into ``figures/``:
 
-* **Fig. 2** — :math:`\bar C_\mathrm{Max}(0.9,\mu)` vs :math:`\mu`, side by side
-  with the original (the one plot the original repo produced).
+* **Fig. 2** — :math:`\bar C_\mathrm{Max}(0.9,\mu)` vs :math:`\mu`.
+* **Fig. 3** — median limit ratio :math:`\sigma_\mathrm{Med}/\sigma_\mathrm{True}`
+  for :math:`C_0`, :math:`C_\mathrm{Max}`, :math:`p_\mathrm{Max}` and Poisson,
+  with and without background.
+* **Fig. 4** — fraction of "mistakes" (limit below the true value), test (b).
+* **Fig. 5** — the :math:`p_\mathrm{Max}` variant, with its low-:math:`\mu` anchor.
 * **C0 validation** — the :math:`k=0` Monte-Carlo max-gap distribution overlaid
   on the analytic :math:`C_0` (Eq. 2); a simulation-free correctness check.
-* **Fig. 5** — the :math:`p_\mathrm{Max}` variant (bonus), with its low-:math:`\mu`
-  analytic anchor.
-* Two explanatory figures used by ``EXPLANATION.md``.
+* Two explanatory figures (Fig. 1 is a schematic) used by ``EXPLANATION.md``.
 
-The paper figures are extracted read-only from ``arXiv-physics0203002v2.tar.gz``.
+Each paper figure is also written side by side with the original, extracted
+read-only from ``arXiv-physics0203002v2.tar.gz``. Figs. 3 & 4 run a large
+experiment-comparison Monte Carlo and dominate the ``--full`` runtime.
 
 Tests
 =====
@@ -90,8 +95,9 @@ Path                             Contents
 ===============================  ===========================================
 ``src/optimum_interval/``        the library
 ``  intervals.py``               pure interval geometry (k-largest, cumulants)
-``  analytic.py``                analytic :math:`C_0`, :math:`x_0` (Eq. 2)
+``  analytic.py``                analytic :math:`C_0`, :math:`x_0`, Poisson & max-gap limits
 ``  montecarlo.py``              ``OptimumIntervalTable`` + upper-limit solver
+``  comparison.py``              ``ComparisonEngine`` for method comparison (Figs. 3-4)
 ``  plotting.py``                Fig. 2 helpers
 ``reproduce_figures.py``         regenerate & verify every figure
 ``EXPLANATION.md``               the derivation / how-to-reimplement guide

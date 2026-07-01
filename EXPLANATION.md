@@ -442,6 +442,8 @@ Run `python reproduce_figures.py --full` (see the README). Committed outputs in
 |---|---|
 | `fig02_barCmax_reproduction.png` | **Yellin Fig. 2** reproduced: $\bar C_\text{max}(0.9,\mu)$ rises from the ~0.90 plateau to ~0.97 across $\mu\in[3,100]$ on a log axis, with upward steps aligned to the Table I thresholds (overlaid). |
 | `c0_validation.png` | The $k=0$ Monte-Carlo max-gap CDF lands on the analytic $C_0$ (Eq. 2) at $\mu=3$ and $\mu=5$ to within Monte-Carlo noise ($\lesssim0.002$) — a simulation-free correctness check. |
+| `fig03_median_ratio_reproduction.png` | **Yellin Fig. 3**: median limit ratio $\sigma_\text{Med}/\sigma_\text{True}$ vs $\mu$ for all four methods, panels (a) no background / (b) unknown background in half the range. Reproduces the ordering: (a) $C_\text{max}\!\approx$ Poisson lowest, $p_\text{max}$ above, $C_0$ highest; (b) $C_\text{max}\!\approx p_\text{max}$ lowest, $C_0$ higher, Poisson worst. (Poisson's paper "jaggedness" from discreteness is smoothed here by the median over a continuous $\mu$ grid.) |
+| `fig04_mistakes_reproduction.png` | **Yellin Fig. 4**: fraction of "mistakes" (limit below true) for test (b): $C_0$ (most) $> p_\text{max} > C_\text{max}$ (fewest). |
 | `fig05_barpmax_reproduction.png` | **Yellin Fig. 5** (bonus, $p_\text{max}$ method): $\bar p_\text{max}(0.9,\mu)$ vs $\mu$, with the low-$\mu$ analytic anchor $1-e^{-x_0}$ and the $\mu=5.156$ kink (Table II). |
 | `explain_cumulant_transform.png` | The §2 worked example: an exponential spectrum mapped to uniform. |
 | `explain_klargest_schematic.png` | The §3–4 $k$-largest intervals on the unit interval. |
@@ -460,11 +462,16 @@ a valid 90% construction.
 > $\approx0.07$–$0.09$ and would sit off the bottom of the plot, so the printed
 > form appears to drop a "$1-$".
 
+This covers all five figures of the paper (Fig. 1 is a schematic, previewed by
+the two `explain_*` figures; Figs. 2–5 are reproduced from data). `--full`
+regenerates everything; Figs. 3 & 4 dominate the runtime (a large
+experiment-comparison Monte Carlo), so `--only compare` runs just those.
+
 Each figure records the random seed and Monte-Carlo sample size. Running the
-script *also* writes `fig02_side_by_side.png` and `fig05_side_by_side.png`, which
-place our reproduction next to the paper's original panel (extracted read-only
-from `arXiv-physics0203002v2.tar.gz`); those are kept out of version control
-because they embed the copyrighted paper figures.
+script *also* writes `*_side_by_side.png` for each paper figure, placing our
+reproduction next to the original panel (extracted read-only from
+`arXiv-physics0203002v2.tar.gz`); those are kept out of version control because
+they embed the copyrighted paper figures.
 
 ---
 

@@ -31,7 +31,8 @@ Public API
 
 from __future__ import annotations
 
-from .analytic import c0, x0
+from .analytic import c0, max_gap_upper_limit, poisson_upper_limit, x0
+from .comparison import ComparisonEngine
 from .intervals import cumulant_points, k_largest_intervals
 from .montecarlo import DEFAULT_CACHE, OptimumIntervalTable
 
@@ -40,7 +41,10 @@ __all__ = [
     "cumulant_points",
     "c0",
     "x0",
+    "poisson_upper_limit",
+    "max_gap_upper_limit",
     "OptimumIntervalTable",
+    "ComparisonEngine",
     "DEFAULT_CACHE",
 ]
 
