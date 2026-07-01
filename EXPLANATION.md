@@ -231,35 +231,52 @@ where the experiment's $C_\text{max}$ equals $\bar C_\text{max}(0.9,\mu)$
 (Fig. 2). Since real background only inflates counts, it can only *lower* the
 observed $C_\text{max}$, so the limit stays valid (conservative).
 
-### 4.1 What *this code* actually computes (read this before trusting a number)
+### 4.1 How the code computes $C_n$ — and why it is exactly Yellin's
 
-This repository does **not** evaluate Yellin's $C_n$ exactly. It uses an
-empirical, Monte-Carlo stand-in:
+At first glance the code looks like it computes something simpler than Yellin's
+$C_n$. It does not — the two coincide, thanks to a nesting property. Here is the
+mapping:
 
 - For each $k$, `k_largest_intervals` returns the size of the **largest**
   interval containing exactly $k$ events (`intervals.py`).
 - `OptimumIntervalTable.extremeness_of_interval(x, k, mu)` returns the empirical
   CDF of that $k$-largest size over background-free trials — the fraction of
-  trials whose $k$-largest interval is smaller than $x$ (`montecarlo.py`). This is
-  the code's proxy for $C_k$.
-- `optimum_interval_statistic` takes the **max over $k$** of that extremeness —
-  the code's $C_\text{max}$.
+  trials whose $k$-largest interval is smaller than $x$ (`montecarlo.py`).
+- `optimum_interval_statistic` takes the **max over $k$** — the code's
+  $C_\text{max}$.
 
-The difference from the paper: Yellin's $C_n(x,\mu)$ is a **joint** statement
-("*all* intervals with $\le n$ events are $\le x$"), whereas the code uses the
-**marginal** distribution of the single $k$-largest interval. These are not the
-same function.
+**Why the $k$-largest CDF equals $C_n$.** Yellin's $C_n(x,\mu)$ is the joint
+statement "*all* intervals with $\le n$ events have size $\le x$." But within any
+single realization the $k$-largest sizes are strictly nested,
 
-**Why the limit is still valid.** Coverage does not depend on using Yellin's
-exact $C_n$. The outer calibration — `extremeness_of_opt_itv_stat`, the
-empirical CDF of $C_\text{max}$ under background-free MC at the *same* $\mu$ —
-makes **any** statistic that increases monotonically with "signal too high" into
-a correct frequentist limit. The precise form of $C_n$ affects only the
-**power** (how tight the limit is), not its validity. So this code is a
-legitimate, slightly-different-power implementation. If you want to match
-Yellin's exact power, replace the inner marginal extremeness with his tabulated
-$C_n$ (or with $C_0$ via Eq. 2 for the $n=0$ term); the outer machinery is
-unchanged.
+$$
+s_0 < s_1 < \dots < s_N,
+$$
+
+because any interval with $j$ events can be widened to swallow one more event,
+producing a strictly larger interval with $j+1$ events. Hence the *largest*
+interval with $\le n$ events is precisely the $n$-largest one, and
+
+$$
+\{\text{all intervals with}\le n\text{ events have size}\le x\}
+\iff \{s_n \le x\}.
+$$
+
+So $C_n(x,\mu)=\Pr[s_n\le x]$ — the plain CDF of the single $n$-largest
+interval, which is exactly what `extremeness_of_interval` estimates. The joint
+condition collapses to the marginal; there is no approximation. (The one place
+this must be handled with care is a trial with fewer than $n$ events, whose
+largest $\le n$-event interval is the whole range, size $1$: such a trial never
+counts as "$s_n<x$" for $x<1$, which the code reproduces by keeping it in the
+denominator but absent from the $k$-reference — see §5.)
+
+Consequently `optimum_interval_statistic` reproduces Yellin's $C_\text{max}$ up
+to Monte-Carlo estimation noise, and the reproduced $\bar C_\text{max}(0.9,\mu)$
+matches the paper quantitatively (e.g. $0.976$ at $\mu=54.5$, §10). The only
+methodological simplification is that this code also tabulates the $n=0$ term by
+Monte Carlo instead of using the exact Eq. 2 — noisier for $n=0$, but the same
+statistic. Coverage is validated directly in §10 (out-of-sample exceedance
+$=0.100$).
 
 ---
 
@@ -280,20 +297,25 @@ For a fixed $\mu$, the calibration distribution is built by
 4. **Threshold.** $\bar C_\text{max}(C,\mu)$ = the $C$ quantile of `opt_itvs[mu]`
    (`bar_c_max`).
 
-Four subtleties a reimplementer must know (all preserved from the original code
-and documented rather than silently "fixed"):
+Four points a reimplementer must get right:
 
 - **In-sample calibration.** The inner extremeness of a trial is computed against
   a reference set that *includes that same trial*. This is a small
   self-referential bias; using two independent MC samples (one for the inner
-  CDFs, one for the outer) removes it. Negligible at large $n$.
-- **Denominator convention.** `extremeness_of_interval` divides by the total
-  trial count $n$, even for large $k$ where fewer trials have a $k$-largest
-  interval. The implied convention: "a trial with too few events to have a
-  $k$-largest interval does not count as smaller." Preserve it for consistency
-  with the calibration.
+  CDFs, one for the outer) removes it. Negligible at large $n$ (the out-of-sample
+  coverage check in §10 lands on $0.100$).
+- **Denominator convention — this is correct, don't "fix" it.**
+  `extremeness_of_interval` divides by the total trial count $n$, even for large
+  $k$ where fewer trials have a $k$-largest interval. This is not a quirk: a trial
+  with fewer than $k$ events has its largest $\le k$-event interval equal to the
+  whole range (size $1$), which is never $< x$ for $x<1$, so it correctly does
+  *not* count in the numerator while still belonging in the denominator. Dividing
+  instead by the number of trials that *have* a $k$-interval would bias the
+  estimate of $C_k$ and break the calibration.
 - **Strict inequalities / discreteness.** Extremeness uses strict "$<$" in steps
-  of $1/n$; near the 90th percentile with small $n$ this granularity matters.
+  of $1/n$; near the 90th percentile with small $n$ this granularity matters. The
+  strict "$<$" also gives $C_n(\mu,\mu)=\Pr[\text{>}n\text{ events}]$ at the
+  whole-range interval (Appendix B), which is what keeps $C_\text{max}$ non-trivial.
 - **Endpoints on both paths.** The Monte-Carlo trials include the $0$/$1$
   endpoints, so real data must too. The original code omitted them on the
   real-data path; this repo adds them in `cumulant_points`, making the two paths
@@ -381,13 +403,15 @@ solve extremeness(mu) = 0.9   ->   mu_upper_limit
   $C_n(\mu,\mu)=P(\mu,n+1)=\Pr[>n$ events in the whole range$]$. Table I of the
   paper lists them: $n=0\to2.303$, $1\to3.890$, $2\to5.800$, $3\to7.491$,
   $4\to9.059$, …. We overlay these as vertical lines in the Fig. 2 reproduction.
-- **Flat at 0.90.** For $2.3026<\mu<3.890$ only $n=0$ can produce $C_\text{max}$,
-  so $\bar C_\text{max}(0.9,\mu)=C_0(x_0(0.9,\mu),\mu)=0.9$ *exactly* — because
-  $C_0(X,\mu)$ is Uniform$[0,1]$ (probability-integral transform), and the 90th
-  percentile of a uniform is 0.9. (In this code the $C_\text{max}$ proxy also
-  maxes over higher-$k$ marginals, so its plateau sits slightly above 0.9; the
-  *exact* Yellin statistic gives 0.9 — see §4.1. The **max-gap** version is the
-  clean 0.9 check, and it is what `figures/c0_validation.png` verifies.)
+- **Flat at 0.90.** For $2.3026<\mu<3.890$ only $n=0$ can produce $C_\text{max}$
+  (intervals with $\ge 1$ event have $C_1(\mu,\mu)=\Pr[{>}1\text{ event}]<0.9$
+  below the $\mu=3.890$ threshold, so they cannot set the 90th percentile). Then
+  $\bar C_\text{max}(0.9,\mu)=C_0(x_0(0.9,\mu),\mu)=0.9$ *exactly* — because
+  $C_0(X,\mu)$ is Uniform$[0,1)$ apart from an atom of mass $e^{-\mu}$ at $1$ (the
+  zero-event experiments, whose max gap is the whole range), and that atom sits
+  above the 90th percentile, which therefore falls at $0.9$. This code reproduces
+  the plateau at $0.9000$ (measured), since it computes the same $C_\text{max}$
+  (§4.1).
 
 The strongest self-test: the $k=0$ Monte-Carlo max-gap distribution must equal
 the analytic $C_0$ (Eq. 2). `tests/test_montecarlo.py::test_mc_maxgap_matches_analytic_c0`
@@ -418,9 +442,23 @@ Run `python reproduce_figures.py --full` (see the README). Committed outputs in
 |---|---|
 | `fig02_barCmax_reproduction.png` | **Yellin Fig. 2** reproduced: $\bar C_\text{max}(0.9,\mu)$ rises from the ~0.90 plateau to ~0.97 across $\mu\in[3,100]$ on a log axis, with upward steps aligned to the Table I thresholds (overlaid). |
 | `c0_validation.png` | The $k=0$ Monte-Carlo max-gap CDF lands on the analytic $C_0$ (Eq. 2) at $\mu=3$ and $\mu=5$ to within Monte-Carlo noise ($\lesssim0.002$) — a simulation-free correctness check. |
-| `fig05_barpmax_reproduction.png` | **Yellin Fig. 5** (bonus, $p_\text{max}$ method): $\bar p_\text{max}(0.9,\mu)$ vs $\mu$, with the low-$\mu$ analytic anchor $1-e^{-x_0}$ (which the MC confirms — the paper's Eq. C1 "$e^{-x_0}$" is a typo) and the $\mu=5.156$ kink (Table II). |
+| `fig05_barpmax_reproduction.png` | **Yellin Fig. 5** (bonus, $p_\text{max}$ method): $\bar p_\text{max}(0.9,\mu)$ vs $\mu$, with the low-$\mu$ analytic anchor $1-e^{-x_0}$ and the $\mu=5.156$ kink (Table II). |
 | `explain_cumulant_transform.png` | The §2 worked example: an exponential spectrum mapped to uniform. |
 | `explain_klargest_schematic.png` | The §3–4 $k$-largest intervals on the unit interval. |
+
+A separate, simulation-based check (not a figure) confirms **coverage**: at
+$\mu_0=15$, fresh out-of-sample background-free experiments exceed
+$\bar C_\text{max}(0.9,\mu_0)$ a fraction $0.100$ of the time, as they should for
+a valid 90% construction.
+
+> **On the $p_\text{max}$ low-$\mu$ anchor.** For $2.3026<\mu<5.156$ only $n=0$
+> contributes, so $\bar p_\text{max}(0.9,\mu)=p_0(x_0(0.9,\mu))$. Since the paper
+> defines $p_n(x)=P(x,n{+}1)=\Pr[{>}n\text{ events}]$, we have $p_0(x)=1-e^{-x}$,
+> giving $\bar p_\text{max}=1-e^{-x_0(0.9,\mu)}$ — which our Monte Carlo confirms
+> and which reproduces Fig. 5's rise from $\approx0.9$ toward $1$. Note the
+> paper's Appendix C prints this closed form as $e^{-x_0}$; that value is
+> $\approx0.07$–$0.09$ and would sit off the bottom of the plot, so the printed
+> form appears to drop a "$1-$".
 
 Each figure records the random seed and Monte-Carlo sample size. Running the
 script *also* writes `fig02_side_by_side.png` and `fig05_side_by_side.png`, which

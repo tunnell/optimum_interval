@@ -54,3 +54,24 @@ def test_upper_limit_smoke():
     limit = table.upper_limit(events, confidence=0.9, n=400)
     assert np.isfinite(limit)
     assert limit > events.size               # limit above the observed count
+
+
+def test_upper_limit_small_n_experiments():
+    """Small-N experiments (the method's target regime) must give sane limits.
+
+    Regression test: the solver used to silently return mu_scan_start (10.0) for
+    0- or 1-event runs.  The 0-event 90% limit should be near the classic ~2.3.
+    """
+    table = OptimumIntervalTable(rng=np.random.default_rng(3))
+    zero = table.upper_limit(np.array([]), confidence=0.9, n=4000)
+    assert 1.5 < zero < 3.5                   # classic 0-event Poisson limit ~2.3
+    one = table.upper_limit(np.array([0.4]), confidence=0.9, n=4000)
+    assert zero < one < 6.0                   # one event -> larger limit
+
+
+def test_upper_limit_raises_when_unbracketed():
+    """No silent wrong answer: raise if the scan range can't bracket the limit."""
+    table = OptimumIntervalTable(rng=np.random.default_rng(4))
+    events = np.sort(np.random.default_rng(5).random(30))
+    with pytest.raises(RuntimeError):
+        table.upper_limit(events, confidence=0.9, n=300, mu_scan_stop=3)

@@ -48,9 +48,13 @@ def _c0_scalar(x: float, mu: float) -> float:
     """``c0`` for scalar ``x`` (see :func:`c0`)."""
     if x <= 0.0:
         return 0.0
-    if x >= mu:
-        # m = 0: only the k = 0 term survives and equals 1.
+    if x > mu:
+        # m = 0: only the k = 0 term survives and equals 1 (the max gap, which is
+        # at most mu, is certainly smaller than x > mu).
         return 1.0
+    # Note x == mu falls through: there m = 1 and Eq. 2 gives C_0(mu,mu) =
+    # 1 - e^{-mu}, the probability of >=1 event (a zero-event experiment has its
+    # max gap equal to the whole range mu, so it is NOT smaller than x = mu).
 
     m = int(np.floor(mu / x))
     if m > _M_CAP:
@@ -111,6 +115,19 @@ def x0(confidence: float, mu: float) -> float:
     -------
     float
         The gap size ``x`` (in expected events) solving ``c0(x, mu) = confidence``.
+
+    Raises
+    ------
+    ValueError
+        If ``confidence`` exceeds the largest attainable ``C_0``, which is
+        ``C_0(mu, mu) = 1 - e^{-mu}``.  For a 90% level this happens when
+        ``mu < 2.3026`` -- exactly the regime where no 90% CL exists (Appendix B).
     """
-    # c0 is 0 at x->0 and 1 at x=mu, so a root is bracketed by (tiny, mu).
+    c_max = _c0_scalar(mu, mu)  # = 1 - e^{-mu}, the largest attainable C_0
+    if confidence >= c_max:
+        raise ValueError(
+            f"C_0 cannot reach {confidence} for mu={mu}: its maximum is "
+            f"{c_max:.4f} at x=mu. (A 90% max-gap limit requires mu > 2.3026.)"
+        )
+    # c0 is 0 at x->0 and c_max at x=mu, so the root is bracketed by (tiny, mu).
     return float(brentq(lambda x: _c0_scalar(x, mu) - confidence, 1e-12, mu))

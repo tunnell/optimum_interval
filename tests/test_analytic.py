@@ -8,8 +8,18 @@ from optimum_interval.analytic import c0, x0
 
 def test_bounds():
     assert c0(0.0, 5.0) == 0.0
-    assert c0(5.0, 5.0) == 1.0       # x >= mu  =>  gap certainly smaller
-    assert c0(10.0, 5.0) == 1.0
+    assert c0(10.0, 5.0) == 1.0                       # x > mu  =>  gap certainly smaller
+    # x == mu: a zero-event experiment has max gap = mu (not < mu), so
+    # C0(mu, mu) = P(>=1 event) = 1 - e^{-mu}, NOT 1.
+    assert c0(5.0, 5.0) == pytest.approx(1.0 - np.exp(-5.0))
+
+
+def test_x0_raises_below_threshold():
+    # For mu < 2.3026 the max attainable C0 is < 0.9, so no x0(0.9, mu) exists.
+    with pytest.raises(ValueError):
+        x0(0.9, 1.5)
+    # Just above the threshold it is defined.
+    assert x0(0.9, 2.5) > 0
 
 
 def test_in_unit_range_and_monotonic():

@@ -172,9 +172,9 @@ class OptimumIntervalTable:
         spectrum_cdf: CdfType = None,
         n: int = 1000,
         *,
-        mu_scan_start: int = 10,
-        mu_scan_stop: int | None = None,
-        bracket: float = 5.0,
+        mu_scan_start: float = 1.0,
+        mu_scan_stop: float | None = None,
+        mu_scan_step: float = 1.0,
         xtol: float = 1e-2,
     ) -> float:
         """``confidence``-level optimum-interval upper limit on ``mu``.
@@ -182,6 +182,11 @@ class OptimumIntervalTable:
         Finds ``mu`` such that ``extremeness_of_opt_itv_stat(C_max(events, mu),
         mu) == confidence`` -- i.e. where the observed C_max equals
         :math:`\\bar C_\\mathrm{max}(\\text{confidence}, \\mu)`.
+
+        The excess ``extremeness - confidence`` increases with ``mu`` (a larger
+        proposed signal makes the observed emptiness look more anomalous), so we
+        scan upward for the first integer step where it turns positive, then
+        refine with Brent's method on the bracketing step ``[prev, mu]``.
 
         Parameters
         ----------
@@ -192,20 +197,26 @@ class OptimumIntervalTable:
         spectrum_cdf : callable, optional
             Signal CDF mapping ``events`` to cumulants.  Identity by default.
         n : int, optional
-            Monte-Carlo trials per ``mu``.
-        mu_scan_start, mu_scan_stop : int, optional
-            Integer bracket-search range.  ``mu_scan_stop`` defaults to
-            ``2 * n_events``.
-        bracket : float, optional
-            Half-width of the ``brenth`` bracket around the seed ``mu``.
+            Monte-Carlo trials per ``mu``.  The root find is stochastic (each
+            ``mu`` uses an independent Monte-Carlo sample); raise ``n`` for a less
+            noisy limit.
+        mu_scan_start, mu_scan_stop, mu_scan_step : float, optional
+            Bracket-search grid.  ``mu_scan_stop`` defaults to roughly twice the
+            event count (never below ``mu_scan_start + 10``).
         xtol : float, optional
             Absolute tolerance on ``mu`` for the root find.
 
         Returns
         -------
         float
-            The upper limit on ``mu``.  Falls back to the seed ``mu`` if the
-            root find fails to converge.
+            The upper limit on ``mu``.
+
+        Raises
+        ------
+        RuntimeError
+            If no exclusion is bracketed within the scan range (rather than
+            silently returning a wrong value).  Widen ``mu_scan_start`` /
+            ``mu_scan_stop`` as the message suggests.
         """
         events = np.asarray(events, dtype=float)
 
@@ -214,21 +225,35 @@ class OptimumIntervalTable:
             stat = self.optimum_interval_statistic(events, mu, spectrum_cdf)
             return self.extremeness_of_opt_itv_stat(stat, mu) - confidence
 
-        stop = 2 * events.size if mu_scan_stop is None else mu_scan_stop
-        seed = mu_scan_start
-        for seed in np.arange(mu_scan_start, stop):
-            if excess(seed) > 0:
-                log.info("bracket seed mu=%s", seed)
-                break
+        if mu_scan_stop is None:
+            mu_scan_stop = max(2.0 * events.size + 5.0, mu_scan_start + 10.0)
 
-        try:
-            limit = brenth(
-                lambda mu: excess(mu), seed - bracket, seed + bracket, xtol=xtol
-            )
-        except ValueError:
-            log.warning("root find failed near mu=%s; returning seed", seed)
-            return float(seed)
-        return float(limit)
+        prev = None
+        for mu in np.arange(mu_scan_start, mu_scan_stop + mu_scan_step, mu_scan_step):
+            mu = float(mu)
+            if excess(mu) > 0:
+                if prev is None:
+                    # Limit lies below the first probed mu; probe downward for a
+                    # point with negative excess to bracket it.
+                    lo = mu
+                    for _ in range(20):
+                        lo *= 0.5
+                        if lo < 1e-3 or excess(lo) < 0:
+                            break
+                    if lo < 1e-3 or excess(lo) >= 0:
+                        raise RuntimeError(
+                            f"upper limit is below mu_scan_start={mu_scan_start}; "
+                            f"lower it."
+                        )
+                    prev = lo
+                log.info("bracketed limit in [%s, %s]", prev, mu)
+                return float(brenth(lambda m: excess(m), prev, mu, xtol=xtol))
+            prev = mu
+
+        raise RuntimeError(
+            f"no {confidence:.0%} exclusion found up to mu={mu_scan_stop}; "
+            f"increase mu_scan_stop."
+        )
 
     # ------------------------------------------------------------------ #
     # Persistence
