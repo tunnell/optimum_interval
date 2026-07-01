@@ -13,6 +13,7 @@ This mirrors what Yellin's Fortran did with tabulated, interpolated functions.
 
 from __future__ import annotations
 
+import warnings
 from collections import defaultdict
 
 import numpy as np
@@ -111,10 +112,19 @@ class ComparisonEngine:
         grid = self.mu_grid
         above = g >= c
         if not above.any():
-            return float(grid[-1])  # limit above grid: clamp (widen mu_grid)
+            warnings.warn(
+                f"upper limit exceeds mu_grid max {grid[-1]:g}; clamping. Widen mu_grid.",
+                stacklevel=3,
+            )
+            return float(grid[-1])
         i = int(np.argmax(above))
         if i == 0:
-            return float(grid[0])  # limit at/below grid start
+            warnings.warn(
+                f"upper limit is at/below mu_grid min {grid[0]:g}; clamping. "
+                "Lower mu_grid.",
+                stacklevel=3,
+            )
+            return float(grid[0])
         y0, y1 = g[i - 1], g[i]
         if y1 == y0:
             return float(grid[i])

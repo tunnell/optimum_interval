@@ -29,4 +29,4 @@ jobs:
           ruff check .
           ruff format --check .
       - name: Test
-        run: pytest -q
+        run: pytest -q --cov=optimum_interval --cov-report=term-missing --cov-fail-under=90

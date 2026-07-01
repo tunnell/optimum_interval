@@ -21,7 +21,6 @@ from collections.abc import Callable
 from pathlib import Path
 
 import numpy as np
-from scipy.optimize import brenth
 
 from .intervals import cumulant_points, k_largest_intervals
 
@@ -171,7 +170,6 @@ class OptimumIntervalTable:
         mu_scan_start: float = 1.0,
         mu_scan_stop: float | None = None,
         mu_scan_step: float = 1.0,
-        xtol: float = 1e-2,
     ) -> float:
         """``confidence``-level optimum-interval upper limit on ``mu``.
 
@@ -180,9 +178,13 @@ class OptimumIntervalTable:
         :math:`\\bar C_\\mathrm{max}(\\text{confidence}, \\mu)`.
 
         The excess ``extremeness - confidence`` increases with ``mu`` (a larger
-        proposed signal makes the observed emptiness look more anomalous), so we
-        scan upward for the first integer step where it turns positive, then
-        refine with Brent's method on the bracketing step ``[prev, mu]``.
+        proposed signal makes the observed emptiness look more anomalous).  We
+        evaluate it on a fixed ``mu`` grid whose tables are **cached** on this
+        instance, then linearly interpolate the zero crossing between the two
+        bracketing grid points.  Because the grid is fixed and cached, the result
+        is deterministic given the generator seed -- unlike a Brent root find,
+        which would re-probe arbitrary ``mu`` with fresh Monte-Carlo noise and
+        scatter the limit by a few percent across seeds.
 
         Parameters
         ----------
@@ -193,14 +195,10 @@ class OptimumIntervalTable:
         spectrum_cdf : callable, optional
             Signal CDF mapping ``events`` to cumulants.  Identity by default.
         n : int, optional
-            Monte-Carlo trials per ``mu``.  The root find is stochastic (each
-            ``mu`` uses an independent Monte-Carlo sample); raise ``n`` for a less
-            noisy limit.
+            Monte-Carlo trials per grid ``mu``.  Raise ``n`` for a less noisy limit.
         mu_scan_start, mu_scan_stop, mu_scan_step : float, optional
-            Bracket-search grid.  ``mu_scan_stop`` defaults to roughly twice the
-            event count (never below ``mu_scan_start + 10``).
-        xtol : float, optional
-            Absolute tolerance on ``mu`` for the root find.
+            The ``mu`` grid.  ``mu_scan_stop`` defaults to roughly twice the event
+            count (never below ``mu_scan_start + 10``).
 
         Returns
         -------
@@ -217,34 +215,40 @@ class OptimumIntervalTable:
         events = np.asarray(events, dtype=float)
 
         def excess(mu: float) -> float:
-            self.generate(mu, n)
+            self.generate(mu, n)  # cached per mu -> deterministic given the seed
             stat = self.optimum_interval_statistic(events, mu, spectrum_cdf)
             return self.extremeness_of_opt_itv_stat(stat, mu) - confidence
+
+        def interpolate(mu_lo, g_lo, mu_hi, g_hi):
+            if g_hi == g_lo:
+                return float(mu_hi)
+            return float(mu_lo + (0.0 - g_lo) * (mu_hi - mu_lo) / (g_hi - g_lo))
 
         if mu_scan_stop is None:
             mu_scan_stop = max(2.0 * events.size + 5.0, mu_scan_start + 10.0)
 
-        prev = None
+        prev_mu, prev_g = None, None
         for mu in np.arange(mu_scan_start, mu_scan_stop + mu_scan_step, mu_scan_step):
             mu = float(mu)
-            if excess(mu) > 0:
-                if prev is None:
-                    # Limit lies below the first probed mu; probe downward for a
-                    # point with negative excess to bracket it.
-                    lo = mu
+            g = excess(mu)
+            if g >= 0.0:
+                if prev_mu is None:
+                    # Limit lies below the first probed mu; step down to bracket.
+                    lo, g_lo = mu, g
                     for _ in range(20):
                         lo *= 0.5
-                        if lo < 1e-3 or excess(lo) < 0:
+                        g_lo = excess(lo)
+                        if lo < 1e-3 or g_lo < 0.0:
                             break
-                    if lo < 1e-3 or excess(lo) >= 0:
+                    if lo < 1e-3 or g_lo >= 0.0:
                         raise RuntimeError(
                             f"upper limit is below mu_scan_start={mu_scan_start}; "
                             f"lower it."
                         )
-                    prev = lo
-                log.info("bracketed limit in [%s, %s]", prev, mu)
-                return float(brenth(lambda m: excess(m), prev, mu, xtol=xtol))
-            prev = mu
+                    prev_mu, prev_g = lo, g_lo
+                log.info("bracketed limit in [%s, %s]", prev_mu, mu)
+                return interpolate(prev_mu, prev_g, mu, g)
+            prev_mu, prev_g = mu, g
 
         raise RuntimeError(
             f"no {confidence:.0%} exclusion found up to mu={mu_scan_stop}; "

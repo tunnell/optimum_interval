@@ -2,7 +2,7 @@
 optimum_interval
 ================
 
-|ci| |python| |license|
+|ci| |python| |license| |doi|
 
 A small, tested Python implementation of **Yellin's optimum-interval method**
 for setting frequentist upper limits in the presence of an unknown, non-
@@ -95,6 +95,18 @@ Tests
 The suite includes the key physics check that the Monte-Carlo maximum-gap
 distribution reproduces the analytic :math:`C_0`.
 
+Scope and related work
+======================
+
+This is a compact, readable reference implementation of Yellin's maximum-gap and
+optimum-interval methods, focused on correctness, reproducibility, and pedagogy
+(see ``EXPLANATION.md``). It is not a full direct-detection framework: for a real
+analysis you supply the recoil-spectrum model — e.g. via
+`wimprates <https://pypi.org/project/wimprates/>`_ (by a co-author here) — and
+pass its CDF as ``spectrum_cdf`` (see ``TUTORIAL.md``). Yellin's original
+routines and tables are at
+`SLAC <http://www.slac.stanford.edu/~yellin/ULsoftware.html>`_.
+
 Package layout
 ==============
 
@@ -120,3 +132,6 @@ Package layout
 .. |license| image:: https://img.shields.io/badge/license-BSD--3--Clause-blue.svg
    :target: https://github.com/tunnell/optimum_interval/blob/master/LICENSE
    :alt: BSD-3-Clause license
+.. |doi| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.21114720.svg
+   :target: https://doi.org/10.5281/zenodo.21114720
+   :alt: DOI

@@ -12,6 +12,7 @@ authors:
   - family-names: Tunnell
     given-names: Christopher
 version: 0.1.0
+doi: 10.5281/zenodo.21114720
 date-released: "2026-07-01"
 license: BSD-3-Clause
 repository-code: "https://github.com/tunnell/optimum_interval"

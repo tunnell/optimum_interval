@@ -35,6 +35,7 @@ from .analytic import c0, max_gap_upper_limit, poisson_upper_limit, x0
 from .comparison import ComparisonEngine
 from .intervals import cumulant_points, k_largest_intervals
 from .montecarlo import DEFAULT_CACHE, OptimumIntervalTable
+from .spectra import spectrum_cdf_from_pdf, spectrum_cdf_from_samples
 
 __all__ = [
     "DEFAULT_CACHE",
@@ -45,6 +46,8 @@ __all__ = [
     "k_largest_intervals",
     "max_gap_upper_limit",
     "poisson_upper_limit",
+    "spectrum_cdf_from_pdf",
+    "spectrum_cdf_from_samples",
     "x0",
 ]
 

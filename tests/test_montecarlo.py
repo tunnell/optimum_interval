@@ -75,3 +75,26 @@ def test_upper_limit_raises_when_unbracketed():
     events = np.sort(np.random.default_rng(5).random(30))
     with pytest.raises(RuntimeError):
         table.upper_limit(events, confidence=0.9, n=300, mu_scan_stop=3)
+
+
+def test_upper_limit_deterministic():
+    """The interpolated solver is reproducible given the seed.
+
+    The old Brent root find re-probed arbitrary mu with fresh Monte-Carlo noise,
+    so the limit scattered across seeds and was not reproducible; the fixed,
+    cached mu grid makes two identically-seeded tables agree bit-for-bit.
+    """
+    events = np.sort(np.random.default_rng(2).random(25))
+    a = OptimumIntervalTable(rng=np.random.default_rng(0)).upper_limit(events, n=800)
+    b = OptimumIntervalTable(rng=np.random.default_rng(0)).upper_limit(events, n=800)
+    assert a == b
+
+
+def test_save_and_load_round_trip(tmp_path):
+    table = OptimumIntervalTable(rng=np.random.default_rng(0))
+    table.generate(5.0, 500)
+    path = tmp_path / "tables.p"
+    table.save(path)
+    loaded = OptimumIntervalTable.load(path)
+    assert loaded.n_trials == table.n_trials
+    np.testing.assert_array_equal(loaded.opt_itvs[5.0], table.opt_itvs[5.0])
