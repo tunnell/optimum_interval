@@ -34,45 +34,62 @@ import numpy as np
 from scipy.optimize import brentq
 from scipy.special import gammaincinv, gammaln
 
-__all__ = ["c0", "x0", "poisson_upper_limit", "max_gap_upper_limit"]
+__all__ = ["c0", "max_gap_upper_limit", "poisson_upper_limit", "x0"]
 
 
-# Above this many terms the maximum gap is far smaller than the typical gap, so
-# C_0 underflows to 0; the alternating series would also lose precision / overflow.
-# All physically relevant evaluations (C_0 anywhere near 0.9) have m of order a
-# few -- the paper notes the series truncates at small k.
-_M_CAP = 60
+# A term whose magnitude exceeds exp(_LOG_HUGE) ~ 1e13 means the alternating
+# series is losing > 13 significant digits to cancellation.  That happens only
+# deep in the C_0 ~ 0 tail (the requested gap x is far below the typical maximum
+# gap), where the true value rounds to 0 -- so we return 0.0 there rather than
+# form a garbage (or overflowing) sum.  This replaces a former fixed m-cap that
+# wrongly zeroed valid large-mu evaluations.
+_LOG_HUGE = 30.0
 
 
 def _c0_scalar(x: float, mu: float) -> float:
-    """``c0`` for scalar ``x`` (see :func:`c0`)."""
+    r"""``c0`` for scalar ``x`` (see :func:`c0`).
+
+    Evaluates Yellin Eq. 2 in its telescoped, division-free form
+
+        term_k = e^{-k x} / k! * base^{k-1} * (base - k),   base = k x - mu,
+
+    working in log-magnitude so individual terms never overflow.  For ``k > mu``
+    the terms decay monotonically and the sum is truncated once negligible; if a
+    term ever exceeds ~1e13 in magnitude we are in the ``C_0 ~ 0`` tail (see
+    ``_LOG_HUGE``) and return 0.
+    """
     if x <= 0.0:
         return 0.0
     if x > mu:
-        # m = 0: only the k = 0 term survives and equals 1 (the max gap, which is
-        # at most mu, is certainly smaller than x > mu).
+        # m = 0: the max gap (at most mu) is certainly smaller than x > mu.
         return 1.0
-    # Note x == mu falls through: there m = 1 and Eq. 2 gives C_0(mu,mu) =
-    # 1 - e^{-mu}, the probability of >=1 event (a zero-event experiment has its
-    # max gap equal to the whole range mu, so it is NOT smaller than x = mu).
+    # x == mu falls through: m = 1 gives C_0(mu, mu) = 1 - e^{-mu}, the
+    # probability of >= 1 event (a zero-event run has its max gap equal to the
+    # whole range mu, which is NOT smaller than x = mu).
 
     m = int(np.floor(mu / x))
-    if m > _M_CAP:
-        # x is far below the typical gap size => essentially impossible for the
-        # maximum gap to be this small => C_0 ~ 0 (see _M_CAP note above).
-        return 0.0
-
-    # Telescoped, division-free form of Eq. (2).  The paper's factor
-    # (1 + k/(mu - k x)) is singular at mu = k x; multiplying it in gives the
-    # algebraically identical but finite expression
-    #     term_k = e^{-k x}/k! * [ (k x - mu)^k - k (k x - mu)^{k-1} ].
     total = 1.0  # k = 0 term
     for k in range(1, m + 1):
-        base = k * x - mu
-        log_prefactor = -k * x - gammaln(k + 1)  # e^{-k x} / k!
-        bracket = base**k - k * base ** (k - 1)
-        total += np.exp(log_prefactor) * bracket
-    return float(np.clip(total, 0.0, 1.0))  # absorb tiny round-off past [0, 1]
+        base = k * x - mu  # <= 0 for k <= m
+        if base == 0.0:
+            # k x == mu: base^k - k base^{k-1} is -1 for k == 1, else 0.
+            term = -np.exp(-k * x - gammaln(k + 1)) if k == 1 else 0.0
+        else:
+            log_mag = (
+                -k * x
+                - gammaln(k + 1)
+                + (k - 1) * np.log(abs(base))
+                + np.log(abs(base - k))
+            )
+            if log_mag > _LOG_HUGE:
+                return 0.0  # C_0 ~ 0 tail; see _LOG_HUGE note
+            # base <= 0 and base - k < 0, so the sign is (-1)^k.
+            sign = -1.0 if k % 2 else 1.0
+            term = sign * np.exp(log_mag)
+        total += term
+        if k > mu and abs(term) < 1e-15:
+            break  # monotone tail; remaining terms are negligible
+    return float(np.clip(total, 0.0, 1.0))  # clip tiny round-off past [0, 1]
 
 
 # Vectorized over x (and mu) while keeping the clear scalar core above.

@@ -11,11 +11,11 @@ Nothing here does Monte Carlo, I/O, or plotting.
 
 from __future__ import annotations
 
-from typing import Callable
+from collections.abc import Callable
 
 import numpy as np
 
-__all__ = ["k_largest_intervals", "cumulant_points"]
+__all__ = ["cumulant_points", "k_largest_intervals"]
 
 
 def k_largest_intervals(
@@ -100,8 +100,25 @@ def cumulant_points(
     -------
     numpy.ndarray
         Sorted cumulants with 0 prepended and 1 appended.
+
+    Raises
+    ------
+    ValueError
+        If the resulting cumulants fall outside ``[0, 1]`` or are not
+        non-decreasing -- i.e. ``spectrum_cdf`` is not a CDF normalized so the
+        analysis range maps onto ``[0, 1]``.
     """
     e = np.sort(np.asarray(events, dtype=float))
     if spectrum_cdf is not None:
         e = np.asarray(spectrum_cdf(e), dtype=float)
+    if e.size:
+        tol = 1e-9
+        if e[0] < -tol or e[-1] > 1.0 + tol:
+            raise ValueError(
+                f"cumulants must lie in [0, 1]; got [{e.min():.4g}, {e.max():.4g}]. "
+                "Is spectrum_cdf normalized so the analysis range maps onto [0, 1]?"
+            )
+        if np.any(np.diff(e) < -tol):
+            raise ValueError("cumulants must be non-decreasing (spectrum_cdf monotonic).")
+        e = np.clip(e, 0.0, 1.0)  # tidy tiny float excursions before adding 0/1
     return np.concatenate(([0.0], e, [1.0]))

@@ -37,15 +37,15 @@ from .intervals import cumulant_points, k_largest_intervals
 from .montecarlo import DEFAULT_CACHE, OptimumIntervalTable
 
 __all__ = [
-    "k_largest_intervals",
-    "cumulant_points",
-    "c0",
-    "x0",
-    "poisson_upper_limit",
-    "max_gap_upper_limit",
-    "OptimumIntervalTable",
-    "ComparisonEngine",
     "DEFAULT_CACHE",
+    "ComparisonEngine",
+    "OptimumIntervalTable",
+    "c0",
+    "cumulant_points",
+    "k_largest_intervals",
+    "max_gap_upper_limit",
+    "poisson_upper_limit",
+    "x0",
 ]
 
 __version__ = "0.1.0"

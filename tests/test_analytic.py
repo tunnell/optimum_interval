@@ -8,7 +8,7 @@ from optimum_interval.analytic import c0, x0
 
 def test_bounds():
     assert c0(0.0, 5.0) == 0.0
-    assert c0(10.0, 5.0) == 1.0                       # x > mu  =>  gap certainly smaller
+    assert c0(10.0, 5.0) == 1.0  # x > mu  =>  gap certainly smaller
     # x == mu: a zero-event experiment has max gap = mu (not < mu), so
     # C0(mu, mu) = P(>=1 event) = 1 - e^{-mu}, NOT 1.
     assert c0(5.0, 5.0) == pytest.approx(1.0 - np.exp(-5.0))
@@ -27,7 +27,7 @@ def test_in_unit_range_and_monotonic():
     xs = np.linspace(0.01, mu, 40)
     vals = c0(xs, mu)
     assert np.all((vals >= 0.0) & (vals <= 1.0))
-    assert np.all(np.diff(vals) >= -1e-12)   # non-decreasing in x
+    assert np.all(np.diff(vals) >= -1e-12)  # non-decreasing in x
 
 
 def test_singular_point_is_finite():
@@ -47,3 +47,22 @@ def test_vectorized_matches_scalar():
     mu = 7.0
     xs = np.linspace(0.1, mu, 15)
     np.testing.assert_allclose(c0(xs, mu), [c0(float(x), mu) for x in xs])
+
+
+def test_c0_correct_at_large_mu():
+    # Regression: a former fixed m-cap made c0 return 0 whenever floor(mu/x) > 60,
+    # which is wrong for large mu with moderate x (C_0 there is O(1), not 0).
+    assert c0(7.0, 200.0) == pytest.approx(0.837, abs=5e-3)
+    assert c0(8.5, 500.0) == pytest.approx(0.905, abs=5e-3)
+    # x0 must still invert c0 at large mu.
+    for mu in (50.0, 200.0, 500.0):
+        assert c0(x0(0.9, mu), mu) == pytest.approx(0.9, abs=1e-6)
+
+
+def test_c0_zero_tail_is_negligible_not_error():
+    # Deep in the C_0 ~ 0 tail (x far below the typical gap) c0 returns a
+    # negligible value cleanly, never overflowing or raising, for small and large
+    # mu alike.  (Small mu: the series converges to ~0; large mu: the cancellation
+    # guard short-circuits to exactly 0.)
+    assert c0(0.01, 6.0) < 1e-9
+    assert c0(1.0, 500.0) == 0.0

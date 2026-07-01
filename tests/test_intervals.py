@@ -1,5 +1,7 @@
 """Tests for the pure interval geometry."""
 
+from itertools import pairwise
+
 import numpy as np
 import pytest
 
@@ -37,7 +39,7 @@ def test_k_range_and_monotonic_in_k():
     sizes = k_largest_intervals(points)
     assert set(sizes) == set(range(len(points) - 1))
     values = [sizes[k] for k in sorted(sizes)]
-    assert all(a <= b for a, b in zip(values, values[1:]))
+    assert all(a <= b for a, b in pairwise(values))
 
 
 def test_spectrum_cdf_applied():
@@ -51,3 +53,21 @@ def test_spectrum_cdf_applied():
 def test_cumulant_points_adds_endpoints_and_sorts():
     pts = cumulant_points(np.array([0.6, 0.1, 0.3]))
     np.testing.assert_allclose(pts, [0.0, 0.1, 0.3, 0.6, 1.0])
+
+
+def test_cumulant_points_edge_cases():
+    # 0-event run -> just the endpoints; single event; points on the boundaries.
+    np.testing.assert_allclose(cumulant_points(np.array([])), [0.0, 1.0])
+    np.testing.assert_allclose(cumulant_points(np.array([0.3])), [0.0, 0.3, 1.0])
+    np.testing.assert_allclose(
+        cumulant_points(np.array([0.0, 1.0])), [0.0, 0.0, 1.0, 1.0]
+    )
+
+
+def test_cumulant_points_rejects_unnormalized_cdf():
+    with pytest.raises(ValueError):
+        cumulant_points(np.array([0.2, 1.3]))  # cumulant > 1
+    with pytest.raises(ValueError):
+        cumulant_points(np.array([-0.1, 0.5]))  # cumulant < 0
+    with pytest.raises(ValueError):  # non-monotone CDF
+        cumulant_points(np.array([0.1, 0.9]), spectrum_cdf=lambda e: 1.0 - e)

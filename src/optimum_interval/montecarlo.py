@@ -17,8 +17,8 @@ from __future__ import annotations
 import logging
 import pickle
 from collections import defaultdict
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 import numpy as np
 from scipy.optimize import brenth
@@ -57,9 +57,7 @@ class OptimumIntervalTable:
         self.itv_sizes: dict[float, dict[int, np.ndarray]] = {}
         self.opt_itvs: dict[float, np.ndarray] = {}
         self.n_trials: dict[float, int] = {}
-        self.rng: np.random.Generator = (
-            np.random.default_rng() if rng is None else rng
-        )
+        self.rng: np.random.Generator = np.random.default_rng() if rng is None else rng
 
     # ------------------------------------------------------------------ #
     # Monte-Carlo table construction
@@ -141,9 +139,7 @@ class OptimumIntervalTable:
         """
         points = cumulant_points(events, spectrum_cdf)
         sizes = k_largest_intervals(points)  # already in cumulant space
-        return max(
-            self.extremeness_of_interval(size, k, mu) for k, size in sizes.items()
-        )
+        return max(self.extremeness_of_interval(size, k, mu) for k, size in sizes.items())
 
     def extremeness_of_opt_itv_stat(self, stat: float, mu: float) -> float:
         """Fraction of MC C_max values at ``mu`` smaller than ``stat``.
@@ -271,7 +267,7 @@ class OptimumIntervalTable:
     @classmethod
     def load(
         cls, path: str | Path = DEFAULT_CACHE, rng: np.random.Generator | None = None
-    ) -> "OptimumIntervalTable":
+    ) -> OptimumIntervalTable:
         """Load tables previously written by :meth:`save`."""
         table = cls(rng=rng)
         with open(path, "rb") as f:

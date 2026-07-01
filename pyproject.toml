@@ -4,20 +4,31 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "optimum-interval"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Yellin optimum-interval upper limits in the presence of unknown background"
 readme = "README.rst"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { file = "LICENSE" }
 authors = [
     { name = "Jelle Aalbers" },
     { name = "Christopher Tunnell" },
 ]
-keywords = ["statistics", "upper limit", "dark matter", "confidence interval", "Yellin"]
+keywords = [
+    "statistics", "upper limit", "dark matter", "direct detection",
+    "confidence interval", "Yellin", "maximum gap", "optimum interval",
+]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Physics",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
     "numpy",
@@ -26,13 +37,25 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["pytest", "ruff", "build"]
 
 [project.urls]
+Repository = "https://github.com/tunnell/optimum_interval"
+Issues = "https://github.com/tunnell/optimum_interval/issues"
 Paper = "https://arxiv.org/abs/physics/0203002"
+
+[tool.setuptools.dynamic]
+version = { attr = "optimum_interval.__version__" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = ["slow: long-running validation tests (deselect with -m 'not slow')"]
+
+[tool.ruff]
+line-length = 90
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "NPY", "RUF"]

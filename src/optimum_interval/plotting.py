@@ -11,8 +11,21 @@ __all__ = ["bar_c_max_curve", "plot_bar_c_max"]
 # Thresholds in mu at which intervals with n events first contribute to C_max
 # (Yellin Table I).  bar_c_max(0.9, mu) steps upward as each is crossed.
 TABLE_I_THRESHOLDS = [
-    2.303, 3.890, 5.800, 7.491, 9.059, 10.548, 12.009, 13.433, 14.824, 16.196,
-    17.540, 18.891, 20.208, 21.520, 22.821,
+    2.303,
+    3.890,
+    5.800,
+    7.491,
+    9.059,
+    10.548,
+    12.009,
+    13.433,
+    14.824,
+    16.196,
+    17.540,
+    18.891,
+    20.208,
+    21.520,
+    22.821,
 ]
 
 

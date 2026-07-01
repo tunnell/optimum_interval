@@ -32,10 +32,10 @@ def test_comparison_engine_limits_are_sane():
     grid = np.linspace(2.4, 40.0, 20)
     engine = ComparisonEngine(grid, n_cal=3000, rng=np.random.default_rng(0))
     rng = np.random.default_rng(1)
-    events = np.sort(rng.random(10))            # 10 events in cumulant space
+    events = np.sort(rng.random(10))  # 10 events in cumulant space
     cmax = engine.cmax_upper_limit(events)
     pmax = engine.pmax_upper_limit(events)
     for limit in (cmax, pmax):
         assert np.isfinite(limit)
         assert grid[0] <= limit <= grid[-1]
-        assert limit > events.size / 2          # limit is in a plausible range
+        assert limit > events.size / 2  # limit is in a plausible range

@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it, and also cite Yellin's method paper (see references)."
+title: "optimum_interval: a Python implementation of Yellin's optimum-interval method"
+abstract: >-
+  Frequentist upper limits on a signal normalization in the presence of an
+  unknown, non-subtractable background, using only the signal shape (Yellin's
+  maximum-gap and optimum-interval methods).
+type: software
+authors:
+  - family-names: Aalbers
+    given-names: Jelle
+  - family-names: Tunnell
+    given-names: Christopher
+version: 0.1.0
+date-released: "2026-07-01"
+license: BSD-3-Clause
+repository-code: "https://github.com/tunnell/optimum_interval"
+keywords:
+  - dark matter
+  - direct detection
+  - upper limit
+  - statistics
+  - maximum gap
+  - optimum interval
+references:
+  - type: article
+    title: "Finding an Upper Limit in the Presence of Unknown Background"
+    authors:
+      - family-names: Yellin
+        given-names: Steve
+    journal: "Physical Review D"
+    volume: 66
+    issue: 3
+    start: "032005"
+    year: 2002
+    doi: 10.1103/PhysRevD.66.032005
+    url: "https://arxiv.org/abs/physics/0203002"

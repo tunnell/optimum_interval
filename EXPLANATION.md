@@ -138,6 +138,8 @@ In code: the transform is `cumulant_points(events, spectrum_cdf)` in
 `intervals.py`, which sorts, applies the CDF, and adds the $0$ and $1$
 boundaries.
 
+![The cumulant transform maps any spectrum to uniform](figures/explain_cumulant_transform.png)
+
 ---
 
 ## 3. The maximum gap method and its closed form (Eq. 2)
@@ -210,6 +212,8 @@ $C_0$ is the maximum-gap case. $C_n$ increases with $x$, decreases with $n$, and
 (the key property) is **independent of the signal shape** once $x$ and $\mu$ are
 fixed — again because of the cumulant transform. For $n\ge1$ it has no simple
 closed form and is tabulated by Monte Carlo.
+
+![k-largest intervals on the unit interval](figures/explain_klargest_schematic.png)
 
 **The search is finite.** Any interval can be widened until it just touches an
 event or a range endpoint without changing how many events it contains — which
@@ -447,6 +451,12 @@ Run `python reproduce_figures.py --full` (see the README). Committed outputs in
 | `fig05_barpmax_reproduction.png` | **Yellin Fig. 5** (bonus, $p_\text{max}$ method): $\bar p_\text{max}(0.9,\mu)$ vs $\mu$, with the low-$\mu$ analytic anchor $1-e^{-x_0}$ and the $\mu=5.156$ kink (Table II). |
 | `explain_cumulant_transform.png` | The §2 worked example: an exponential spectrum mapped to uniform. |
 | `explain_klargest_schematic.png` | The §3–4 $k$-largest intervals on the unit interval. |
+
+![Reproduction of Yellin Fig. 2](figures/fig02_barCmax_reproduction.png)
+
+![Reproduction of Yellin Fig. 3](figures/fig03_median_ratio_reproduction.png)
+
+![Monte-Carlo vs analytic C0 validation](figures/c0_validation.png)
 
 A separate, simulation-based check (not a figure) confirms **coverage**: at
 $\mu_0=15$, fresh out-of-sample background-free experiments exceed

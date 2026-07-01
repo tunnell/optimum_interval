@@ -23,9 +23,9 @@ def test_mc_maxgap_matches_analytic_c0():
     table.generate(mu, n)
 
     gap_fractions = table.itv_sizes[mu][0]
-    gap_events = mu * gap_fractions           # convert to Yellin's x units
+    gap_events = mu * gap_fractions  # convert to Yellin's x units
 
-    tol = 4.0 / np.sqrt(n)                     # a few-sigma binomial band
+    tol = 4.0 / np.sqrt(n)  # a few-sigma binomial band
     for x in (1.0, 2.0, 3.0, 4.0):
         empirical = np.count_nonzero(gap_events < x) / n
         assert empirical == pytest.approx(c0(x, mu), abs=tol)
@@ -50,10 +50,10 @@ def test_upper_limit_smoke():
     """A run with many events yields a finite limit above the event count scale."""
     rng = np.random.default_rng(7)
     table = OptimumIntervalTable(rng=rng)
-    events = np.sort(rng.random(40))          # 40 events in cumulant space
+    events = np.sort(rng.random(40))  # 40 events in cumulant space
     limit = table.upper_limit(events, confidence=0.9, n=400)
     assert np.isfinite(limit)
-    assert limit > events.size               # limit above the observed count
+    assert limit > events.size  # limit above the observed count
 
 
 def test_upper_limit_small_n_experiments():
@@ -64,9 +64,9 @@ def test_upper_limit_small_n_experiments():
     """
     table = OptimumIntervalTable(rng=np.random.default_rng(3))
     zero = table.upper_limit(np.array([]), confidence=0.9, n=4000)
-    assert 1.5 < zero < 3.5                   # classic 0-event Poisson limit ~2.3
+    assert 1.5 < zero < 3.5  # classic 0-event Poisson limit ~2.3
     one = table.upper_limit(np.array([0.4]), confidence=0.9, n=4000)
-    assert zero < one < 6.0                   # one event -> larger limit
+    assert zero < one < 6.0  # one event -> larger limit
 
 
 def test_upper_limit_raises_when_unbracketed():
