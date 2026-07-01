@@ -303,13 +303,17 @@ and documented rather than silently "fixed"):
 
 ## 6. Getting the upper limit: root finding
 
-The limit is the $\mu$ solving
+The limit is the $\mu$ at which the observed statistic reaches the requested
+quantile — i.e. `extremeness_of_opt_itv_stat` evaluated at the observed
+$C_\text{max}$ equals $C$:
 
 $$
-\texttt{extremeness\_of\_opt\_itv\_stat}\bigl(C_\text{max}(\text{data},\mu),\ \mu\bigr)=C,
+\mathrm{extremeness}\bigl(C_\text{max}(\text{data},\mu),\ \mu\bigr)=C
+\quad\Longleftrightarrow\quad
+C_\text{max}(\text{data},\mu)=\bar C_\text{max}(C,\mu).
 $$
 
-i.e. observed $C_\text{max}=\bar C_\text{max}(C,\mu)$. `upper_limit`
+`upper_limit`
 (`montecarlo.py`) does a coarse integer scan for the first $\mu$ where
 $f(\mu)=\text{extremeness}-C$ turns positive, then refines with Brent's method
 (`scipy.optimize.brenth`). Monotonicity — a larger proposed $\mu$ makes the
