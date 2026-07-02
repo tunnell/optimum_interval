@@ -38,6 +38,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov", "hypothesis", "ruff", "build"]
+docs = ["mkdocs-material", "mkdocstrings[python]"]
 
 [project.urls]
 Repository = "https://github.com/tunnell/optimum_interval"

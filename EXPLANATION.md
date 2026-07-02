@@ -51,7 +51,7 @@ Two variants:
 | $C_0(x,\mu)$ | prob. the maximum gap is smaller than $x$ (Eq. 2) |
 | $C_n(x,\mu)$ | prob. that *all* intervals with $\le n$ events have size $\le x$ |
 | $C_\text{max}$ | the test statistic: max over intervals of $C_n(x,\mu)$ |
-| $\bar C_\text{max}(C,\mu)$ | value of $C_\text{max}$ reached with probability $C$ (the calibration; Fig. 2) |
+| $\bar{C}_\text{max}(C,\mu)$ | value of $C_\text{max}$ reached with probability $C$ (the calibration; Fig. 2) |
 
 ---
 
@@ -228,10 +228,10 @@ $$
 
 Large $C_\text{max}$ ⇒ some interval is far emptier than the proposed signal
 allows ⇒ strong evidence $\sigma$ is too high. Because $C_\text{max}$ is itself
-chosen using the data, we must calibrate it: define $\bar C_\text{max}(C,\mu)$ as
+chosen using the data, we must calibrate it: define $\bar{C}_\text{max}(C,\mu)$ as
 the value such that a fraction $C$ of background-free experiments give
-$C_\text{max}<\bar C_\text{max}(C,\mu)$. The 90% CL upper limit on $\sigma$ is
-where the experiment's $C_\text{max}$ equals $\bar C_\text{max}(0.9,\mu)$
+$C_\text{max}<\bar{C}_\text{max}(C,\mu)$. The 90% CL upper limit on $\sigma$ is
+where the experiment's $C_\text{max}$ equals $\bar{C}_\text{max}(0.9,\mu)$
 (Fig. 2). Since real background only inflates counts, it can only *lower* the
 observed $C_\text{max}$, so the limit stays valid (conservative).
 
@@ -275,7 +275,7 @@ counts as "$s_n<x$" for $x<1$, which the code reproduces by keeping it in the
 denominator but absent from the $k$-reference — see §5.)
 
 Consequently `optimum_interval_statistic` reproduces Yellin's $C_\text{max}$ up
-to Monte-Carlo estimation noise, and the reproduced $\bar C_\text{max}(0.9,\mu)$
+to Monte-Carlo estimation noise, and the reproduced $\bar{C}_\text{max}(0.9,\mu)$
 matches the paper quantitatively (e.g. $0.976$ at $\mu=54.5$, §10). The only
 methodological simplification is that this code also tabulates the $n=0$ term by
 Monte Carlo instead of using the exact Eq. 2 — noisier for $n=0$, but the same
@@ -284,7 +284,7 @@ $=0.100$).
 
 ---
 
-## 5. Building $\bar C_\text{max}$ by Monte Carlo
+## 5. Building $\bar{C}_\text{max}$ by Monte Carlo
 
 For a fixed $\mu$, the calibration distribution is built by
 `OptimumIntervalTable.generate(mu, n)` (`montecarlo.py`):
@@ -298,7 +298,7 @@ For a fixed $\mu$, the calibration distribution is built by
 3. **Statistic per trial.** `opt_itvs[mu][t]` = $C_\text{max}$ of trial $t$ =
    $\max_k$ (empirical CDF of size$_k$). Computed with a vectorized
    `searchsorted` and `np.maximum.at`.
-4. **Threshold.** $\bar C_\text{max}(C,\mu)$ = the $C$ quantile of `opt_itvs[mu]`
+4. **Threshold.** $\bar{C}_\text{max}(C,\mu)$ = the $C$ quantile of `opt_itvs[mu]`
    (`bar_c_max`).
 
 Four points a reimplementer must get right:
@@ -336,7 +336,7 @@ $C_\text{max}$ equals $C$:
 $$
 \mathrm{extremeness}\bigl(C_\text{max}(\text{data},\mu),\ \mu\bigr)=C
 \quad\Longleftrightarrow\quad
-C_\text{max}(\text{data},\mu)=\bar C_\text{max}(C,\mu).
+C_\text{max}(\text{data},\mu)=\bar{C}_\text{max}(C,\mu).
 $$
 
 `upper_limit`
@@ -349,7 +349,7 @@ justifies the bracketing scan.
 Practical notes / knobs (all exposed as keyword arguments so nothing is a magic
 number): `mu_scan_start`, `mu_scan_stop`, `bracket`, `xtol`, `n`. Because the
 empirical CDF is a step function, Brent on it with `xtol=1e-2` is deliberately
-crude; for production, precompute $\bar C_\text{max}$ on a $\mu$ grid and
+crude; for production, precompute $\bar{C}_\text{max}$ on a $\mu$ grid and
 interpolate (as Yellin's Fortran does) rather than regenerating tables inside the
 root find.
 
@@ -373,7 +373,7 @@ A self-contained recipe. Each step names the function here that implements it.
 6. **$C_\text{max}$ statistic.** $C_\text{max}=\max_k \text{CDF}_k(\text{size}_k)$.
    *(`optimum_interval_statistic`.)*
 7. **Outer calibration.** Distribution of $C_\text{max}$ over trials;
-   $\bar C_\text{max}(0.9,\mu)$ = its 90th percentile.
+   $\bar{C}_\text{max}(0.9,\mu)$ = its 90th percentile.
    *(`opt_itvs`, `extremeness_of_opt_itv_stat`, `bar_c_max`.)*
 8. **Limit.** Scan / root-find $\mu$ so observed $C_\text{max}=\bar
    C_\text{max}(0.9,\mu)$. *(`upper_limit`.)*
@@ -401,16 +401,16 @@ solve extremeness(mu) = 0.9   ->   mu_upper_limit
   has zero events, giving the maximal possible $C_\text{max}$; no threshold puts
   exactly 90% below it. Hence **no** cross section with $\mu<2.3026$ can be
   excluded at 90% CL. ($e^{-2.3026}=0.1$.)
-- **The curve is not smooth.** $\bar C_\text{max}(0.9,\mu)$ jumps upward each time
+- **The curve is not smooth.** $\bar{C}_\text{max}(0.9,\mu)$ jumps upward each time
   $\mu$ crosses a threshold where intervals with one more event can first become
-  the maximum. Threshold condition $C_n(\mu,\mu)=\bar C_\text{max}(C,\mu)$ with
+  the maximum. Threshold condition $C_n(\mu,\mu)=\bar{C}_\text{max}(C,\mu)$ with
   $C_n(\mu,\mu)=P(\mu,n+1)=\Pr[>n$ events in the whole range$]$. Table I of the
   paper lists them: $n=0\to2.303$, $1\to3.890$, $2\to5.800$, $3\to7.491$,
   $4\to9.059$, …. We overlay these as vertical lines in the Fig. 2 reproduction.
 - **Flat at 0.90.** For $2.3026<\mu<3.890$ only $n=0$ can produce $C_\text{max}$
   (intervals with $\ge 1$ event have $C_1(\mu,\mu)=\Pr[{>}1\text{ event}]<0.9$
   below the $\mu=3.890$ threshold, so they cannot set the 90th percentile). Then
-  $\bar C_\text{max}(0.9,\mu)=C_0(x_0(0.9,\mu),\mu)=0.9$ *exactly* — because
+  $\bar{C}_\text{max}(0.9,\mu)=C_0(x_0(0.9,\mu),\mu)=0.9$ *exactly* — because
   $C_0(X,\mu)$ is Uniform$[0,1)$ apart from an atom of mass $e^{-\mu}$ at $1$ (the
   zero-event experiments, whose max gap is the whole range), and that atom sits
   above the 90th percentile, which therefore falls at $0.9$. This code reproduces
@@ -444,11 +444,11 @@ Run `python reproduce_figures.py --full` (see the README). Committed outputs in
 
 | figure | what it verifies |
 |---|---|
-| `fig02_barCmax_reproduction.png` | **Yellin Fig. 2** reproduced: $\bar C_\text{max}(0.9,\mu)$ rises from the ~0.90 plateau to ~0.97 across $\mu\in[3,100]$ on a log axis, with upward steps aligned to the Table I thresholds (overlaid). |
+| `fig02_barCmax_reproduction.png` | **Yellin Fig. 2** reproduced: $\bar{C}_\text{max}(0.9,\mu)$ rises from the ~0.90 plateau to ~0.97 across $\mu\in[3,100]$ on a log axis, with upward steps aligned to the Table I thresholds (overlaid). |
 | `c0_validation.png` | The $k=0$ Monte-Carlo max-gap CDF lands on the analytic $C_0$ (Eq. 2) at $\mu=3$ and $\mu=5$ to within Monte-Carlo noise ($\lesssim0.002$) — a simulation-free correctness check. |
 | `fig03_median_ratio_reproduction.png` | **Yellin Fig. 3**: median limit ratio $\sigma_\text{Med}/\sigma_\text{True}$ vs $\mu$ for all four methods, panels (a) no background / (b) unknown background in half the range. Reproduces the ordering: (a) $C_\text{max}\!\approx$ Poisson lowest, $p_\text{max}$ above, $C_0$ highest; (b) $C_\text{max}\!\approx p_\text{max}$ lowest, $C_0$ higher, Poisson worst. (Poisson's paper "jaggedness" from discreteness is smoothed here by the median over a continuous $\mu$ grid.) |
 | `fig04_mistakes_reproduction.png` | **Yellin Fig. 4**: fraction of "mistakes" (limit below true) for test (b): $C_0$ (most) $> p_\text{max} > C_\text{max}$ (fewest). |
-| `fig05_barpmax_reproduction.png` | **Yellin Fig. 5** (bonus, $p_\text{max}$ method): $\bar p_\text{max}(0.9,\mu)$ vs $\mu$, with the low-$\mu$ analytic anchor $1-e^{-x_0}$ and the $\mu=5.156$ kink (Table II). |
+| `fig05_barpmax_reproduction.png` | **Yellin Fig. 5** (bonus, $p_\text{max}$ method): $\bar{p}_\text{max}(0.9,\mu)$ vs $\mu$, with the low-$\mu$ analytic anchor $1-e^{-x_0}$ and the $\mu=5.156$ kink (Table II). |
 | `explain_cumulant_transform.png` | The §2 worked example: an exponential spectrum mapped to uniform. |
 | `explain_klargest_schematic.png` | The §3–4 $k$-largest intervals on the unit interval. |
 
@@ -460,13 +460,13 @@ Run `python reproduce_figures.py --full` (see the README). Committed outputs in
 
 A separate, simulation-based check (not a figure) confirms **coverage**: at
 $\mu_0=15$, fresh out-of-sample background-free experiments exceed
-$\bar C_\text{max}(0.9,\mu_0)$ a fraction $0.100$ of the time, as they should for
+$\bar{C}_\text{max}(0.9,\mu_0)$ a fraction $0.100$ of the time, as they should for
 a valid 90% construction.
 
 > **On the $p_\text{max}$ low-$\mu$ anchor.** For $2.3026<\mu<5.156$ only $n=0$
-> contributes, so $\bar p_\text{max}(0.9,\mu)=p_0(x_0(0.9,\mu))$. Since the paper
+> contributes, so $\bar{p}_\text{max}(0.9,\mu)=p_0(x_0(0.9,\mu))$. Since the paper
 > defines $p_n(x)=P(x,n{+}1)=\Pr[{>}n\text{ events}]$, we have $p_0(x)=1-e^{-x}$,
-> giving $\bar p_\text{max}=1-e^{-x_0(0.9,\mu)}$ — which our Monte Carlo confirms
+> giving $\bar{p}_\text{max}=1-e^{-x_0(0.9,\mu)}$ — which our Monte Carlo confirms
 > and which reproduces Fig. 5's rise from $\approx0.9$ toward $1$. Note the
 > paper's Appendix C prints this closed form as $e^{-x_0}$; that value is
 > $\approx0.07$–$0.09$ and would sit off the bottom of the plot, so the printed

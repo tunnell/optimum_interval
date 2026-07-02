@@ -1,0 +1,56 @@
+site_name: optimum_interval
+site_description: Yellin optimum-interval upper limits in the presence of unknown background
+repo_url: https://github.com/tunnell/optimum_interval
+repo_name: tunnell/optimum_interval
+use_directory_urls: false
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - content.code.copy
+    - toc.integrate
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+
+nav:
+  - Home: index.md
+  - Tutorial: tutorial.md
+  - Explanation: explanation.md
+  - API reference: api.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            show_root_heading: true
+            show_source: true
+            members_order: source
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: [.]
+      check_paths: true
+  - pymdownx.arithmatex:
+      generic: true
+
+hooks:
+  - docs/hooks.py
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

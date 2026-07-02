@@ -7,6 +7,9 @@ dist/
 .coverage
 .coverage.*
 htmlcov/
+
+# mkdocs build output
+site/
 .venv/
 venv/
 

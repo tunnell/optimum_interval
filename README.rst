@@ -67,7 +67,7 @@ Reproducing the paper's figures
 
 This regenerates **all five paper figures**, into ``figures/``:
 
-* **Fig. 2** — :math:`\bar C_\mathrm{Max}(0.9,\mu)` vs :math:`\mu`.
+* **Fig. 2** — :math:`\bar{C}_\mathrm{Max}(0.9,\mu)` vs :math:`\mu`.
 * **Fig. 3** — median limit ratio :math:`\sigma_\mathrm{Med}/\sigma_\mathrm{True}`
   for :math:`C_0`, :math:`C_\mathrm{Max}`, :math:`p_\mathrm{Max}` and Poisson,
   with and without background.
