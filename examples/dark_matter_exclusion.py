@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""End-to-end tutorial: from a signal spectrum to a cross-section exclusion curve.
+"""Applied example: a dark-matter cross-section exclusion curve.
 
-This is the runnable companion to ``TUTORIAL.md``. It walks the full workflow:
+A dedicated, domain-specific companion to the generic ``TUTORIAL.md`` /
+``examples/upper_limit.py`` (which cover the core "upper limit on the number of
+events" workflow).  Here we take that limit on ``mu`` all the way to a
+cross-section exclusion curve:
 
-1. build a *normalized* signal-spectrum CDF (``spectrum_cdf``),
+1. build a *normalized* recoil-spectrum CDF (``spectrum_cdf``),
 2. transform observed energies into cumulant space,
 3. get an upper limit on the expected signal count ``mu`` two ways
    (analytic max gap, and Monte-Carlo optimum interval),
@@ -14,7 +17,7 @@ The astrophysics here is a deliberately simple toy (an exponential recoil
 spectrum, a made-up counts-per-cross-section); a real analysis would plug in a
 package like ``wimprates``. The *statistics* is the real thing.
 
-Run:  python examples/tutorial.py
+Run:  python examples/dark_matter_exclusion.py
 """
 
 from __future__ import annotations
@@ -54,7 +57,7 @@ def limits_for_dataset(energies, spectrum_cdf, table, *, confidence=0.9, n=2000)
     return mu_maxgap, mu_optint
 
 
-def run_tutorial(*, n=2000, n_masses=8, make_plot=False, rng=None):
+def run_exclusion(*, n=2000, n_masses=8, make_plot=False, rng=None):
     """Run the whole workflow and return a results dict."""
     rng = np.random.default_rng(0) if rng is None else rng
     e_min, e_max = 1.0, 40.0  # keV analysis window
@@ -114,7 +117,7 @@ def _plot_exclusion(rows):
     fig.tight_layout()
     from pathlib import Path
 
-    out = Path(__file__).resolve().parent.parent / "figures" / "tutorial_exclusion.png"
+    out = Path(__file__).resolve().parent.parent / "figures" / "dm_exclusion.png"
     out.parent.mkdir(exist_ok=True)
     fig.savefig(out, dpi=140)
     plt.close(fig)
@@ -122,8 +125,8 @@ def _plot_exclusion(rows):
 
 
 def main():
-    print("Optimum-interval tutorial: spectrum -> mu limit -> exclusion curve\n")
-    result = run_tutorial(n=2000, n_masses=8, make_plot=True)
+    print("Dark-matter exclusion: recoil spectrum -> mu limit -> sigma(mass)\n")
+    result = run_exclusion(n=2000, n_masses=8, make_plot=True)
     print(f"observed energies (keV): {result['energies']}\n")
     print(
         f"{'mass[GeV]':>9} {'mu_UL(maxgap)':>13} {'mu_UL(optint)':>13} "
