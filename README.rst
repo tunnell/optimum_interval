@@ -2,7 +2,7 @@
 optimum_interval
 ================
 
-|ci| |python| |license| |doi|
+|python| |license| |doi|
 
 A small, tested Python implementation of **Yellin's optimum-interval method**
 for setting frequentist upper limits in the presence of an unknown, non-
@@ -124,9 +124,6 @@ Package layout
    tests/                     pytest suite
 
 
-.. |ci| image:: https://github.com/tunnell/optimum_interval/actions/workflows/ci.yml/badge.svg
-   :target: https://github.com/tunnell/optimum_interval/actions/workflows/ci.yml
-   :alt: CI status
 .. |python| image:: https://img.shields.io/badge/python-3.10%2B-blue.svg
    :alt: Python 3.10+
 .. |license| image:: https://img.shields.io/badge/license-BSD--3--Clause-blue.svg
