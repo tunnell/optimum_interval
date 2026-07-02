@@ -2,7 +2,7 @@
 optimum_interval
 ================
 
-|python| |license| |doi|
+|docs| |python| |license| |doi|
 
 A small, tested Python implementation of **Yellin's optimum-interval method**
 for setting frequentist upper limits in the presence of an unknown, non-
@@ -17,8 +17,9 @@ Method reference: S. Yellin, *"Finding an Upper Limit in the Presence of Unknown
 Background"*, Phys. Rev. **D66** (2002) 032005,
 `arXiv:physics/0203002 <https://arxiv.org/abs/physics/0203002>`_.
 
-Learn it: ``TUTORIAL.md`` is a hands-on walkthrough; ``EXPLANATION.md`` is the
-full physicist-oriented derivation and reimplement-it-yourself recipe.
+**Documentation:** https://optimum-interval.readthedocs.io — a hands-on
+tutorial, the full derivation, and the API reference. (The same content is in
+``TUTORIAL.md`` and ``EXPLANATION.md`` in this repo.)
 
 Install
 =======
@@ -104,8 +105,7 @@ optimum-interval methods, focused on correctness, reproducibility, and pedagogy
 analysis you supply the recoil-spectrum model — e.g. via
 `wimprates <https://pypi.org/project/wimprates/>`_ (by a co-author here) — and
 pass its CDF as ``spectrum_cdf`` (see ``TUTORIAL.md``). Yellin's original
-routines and tables are at
-`SLAC <http://www.slac.stanford.edu/~yellin/ULsoftware.html>`_.
+C/Fortran routines and tables accompanied the paper (arXiv:physics/0203002).
 
 Package layout
 ==============
@@ -124,6 +124,9 @@ Package layout
    tests/                     pytest suite
 
 
+.. |docs| image:: https://readthedocs.org/projects/optimum-interval/badge/?version=latest
+   :target: https://optimum-interval.readthedocs.io/en/latest/
+   :alt: Documentation
 .. |python| image:: https://img.shields.io/badge/python-3.10%2B-blue.svg
    :alt: Python 3.10+
 .. |license| image:: https://img.shields.io/badge/license-BSD--3--Clause-blue.svg

@@ -364,8 +364,8 @@ A self-contained recipe. Each step names the function here that implements it.
    `spectrum_cdf`.)*
 2. **Transform the data.** $\epsilon_i=\epsilon(E_i)$; sort; prepend $0$, append
    $1$. *(`cumulant_points`.)*
-3. **$k$-largest intervals.** For each $k$,
-   $\text{size}_k=\max_i\,(\epsilon_{i+k+1}-\epsilon_i)$. *(`k_largest_intervals`.)*
+3. **$k$-largest intervals.** For each $k$, $\text{size}_k = \max_i (\epsilon_{i+k+1} - \epsilon_i)$.
+   *(`k_largest_intervals`.)*
 4. **Background-only MC at this $\mu$.** Per trial: $N\sim\text{Poisson}(\mu)$;
    $N$ uniforms; add $0,1$; sort. *(`generate_trials`.)*
 5. **Inner calibration.** For each $k$, empirical CDF of $\text{size}_k$ over
