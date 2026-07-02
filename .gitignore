@@ -21,6 +21,10 @@ saved_intervals.p
 # locally for side-by-side verification, not redistributed in this repo.
 0203002v2.pdf
 arXiv-physics0203002v2.tar.gz
+
+# Internal research documents (unpublished analysis notes / seminar slides)
+Computing UHDM Limit.pdf
+ICTP HECAP 2026*.pdf
 paper_figs/
 figures/paper_*.png
 figures/*side_by_side*.png

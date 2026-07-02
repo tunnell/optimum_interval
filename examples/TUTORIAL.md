@@ -5,8 +5,8 @@ number of signal events you cannot rule out?** — a 90% CL frequentist upper li
 on the expected signal count `mu` (a Poisson mean), using only the signal's
 *shape*, with no background model and no binning.
 
-This is a hands-on how-to; for *why* it works see [`EXPLANATION.md`](EXPLANATION.md).
-Everything here is runnable in [`examples/upper_limit.py`](examples/upper_limit.py):
+This is a hands-on how-to; for *why* it works see [`EXPLANATION.md`](../EXPLANATION.md).
+Everything here is runnable in [`examples/upper_limit.py`](upper_limit.py):
 
 ```bash
 python examples/upper_limit.py
@@ -90,10 +90,15 @@ non-monotonic.)
 `mu_ul` is a limit on the expected *count*. If your signal count scales linearly
 with some physical parameter — `mu = theta * mu_1` (e.g. `theta` a rate or cross
 section and `mu_1` the expected count per unit `theta` = exposure × efficiency ×
-…) — then `theta_ul = mu_ul / mu_1`. Sweeping a model parameter and re-limiting at
-each point traces an exclusion curve. A full worked example (a dark-matter
-recoil-spectrum → cross-section exclusion curve) is in
-[`examples/dark_matter_exclusion.py`](examples/dark_matter_exclusion.py).
+…) — then `theta_ul = mu_ul / mu_1`. (If the count is *quadratic* in the
+parameter, invert with a square root instead.) Sweeping a model parameter and
+re-limiting at each point traces an exclusion curve. Worked examples:
+
+- [`examples/dark_matter_exclusion.py`](dark_matter_exclusion.py) —
+  recoil spectrum → cross-section exclusion curve;
+- [`examples/uhdm_momentum_kicks.py`](uhdm_momentum_kicks.py) with
+  [`TUTORIAL_UHDM.md`](TUTORIAL_UHDM.md) — momentum-kick searches with levitated
+  sensors (ultraheavy dark matter), including the quadratic-coupling conversion.
 
 ## Tips
 

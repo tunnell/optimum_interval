@@ -23,6 +23,7 @@ theme:
 nav:
   - Home: index.md
   - Tutorial: tutorial.md
+  - Momentum kicks (UHDM): uhdm.md
   - Explanation: explanation.md
   - API reference: api.md
 

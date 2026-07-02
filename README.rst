@@ -18,8 +18,9 @@ Background"*, Phys. Rev. **D66** (2002) 032005,
 `arXiv:physics/0203002 <https://arxiv.org/abs/physics/0203002>`_.
 
 **Documentation:** https://optimum-interval.readthedocs.io — a hands-on
-tutorial, the full derivation, and the API reference. (The same content is in
-``TUTORIAL.md`` and ``EXPLANATION.md`` in this repo.)
+tutorial, a dedicated momentum-kick (ultraheavy DM) tutorial, the full
+derivation, and the API reference. (The same content is in ``examples/``
+and ``EXPLANATION.md`` in this repo.)
 
 Install
 =======
@@ -104,7 +105,7 @@ optimum-interval methods, focused on correctness, reproducibility, and pedagogy
 (see ``EXPLANATION.md``). It is not a full direct-detection framework: for a real
 analysis you supply the recoil-spectrum model — e.g. via
 `wimprates <https://pypi.org/project/wimprates/>`_ (by a co-author here) — and
-pass its CDF as ``spectrum_cdf`` (see ``TUTORIAL.md``). Yellin's original
+pass its CDF as ``spectrum_cdf`` (see ``examples/TUTORIAL.md``). Yellin's original
 C/Fortran routines and tables accompanied the paper (arXiv:physics/0203002).
 
 Package layout
@@ -119,7 +120,9 @@ Package layout
      comparison.py            ComparisonEngine for method comparison (Figs. 3-4)
      plotting.py              Fig. 2 helpers
    reproduce_figures.py       regenerate & verify every figure
-   TUTORIAL.md                hands-on walkthrough
+   examples/                  runnable examples + their tutorials
+     TUTORIAL.md              hands-on walkthrough
+     TUTORIAL_UHDM.md         momentum-kick searches (ultraheavy DM)
    EXPLANATION.md             the derivation / how-to-reimplement guide
    tests/                     pytest suite
 

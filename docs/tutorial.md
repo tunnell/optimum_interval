@@ -1,1 +1,1 @@
---8<-- "TUTORIAL.md"
+--8<-- "examples/TUTORIAL.md"
