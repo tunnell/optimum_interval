@@ -102,7 +102,7 @@ $$
 \epsilon(E)=\frac{1}{\mu}\int_{E_\text{min}}^{E}\frac{dN}{dE'}\,dE' \in[0,1].
 $$
 
-If signal events are drawn from $dN/dE$, then $\epsilon(E)$ is **Uniform$[0,1]$**,
+If signal events are drawn from $dN/dE$, then $\epsilon(E)$ is **uniform on** $[0,1]$,
 whatever the shape of $dN/dE$. Equivalently, in the unnormalized coordinate
 $z(E)=\int_{E_\text{min}}^E dN/dE'\,dE'$ running from $0$ to $\mu$, signal events
 are uniform with **unit density**, and the total length of the range equals
@@ -296,7 +296,7 @@ For a fixed $\mu$, the calibration distribution is built by
 2. **Inner tables.** For each trial compute all $k$-largest sizes; collect them
    into `itv_sizes[mu][k]` (per-$k$ arrays across trials).
 3. **Statistic per trial.** `opt_itvs[mu][t]` = $C_\text{max}$ of trial $t$ =
-   $\max_k$ (empirical CDF of size$_k$). Computed with a vectorized
+   $\max_k$ (empirical CDF of $\text{size}_k$). Computed with a vectorized
    `searchsorted` and `np.maximum.at`.
 4. **Threshold.** $\bar{C}_\text{max}(C,\mu)$ = the $C$ quantile of `opt_itvs[mu]`
    (`bar_c_max`).
@@ -375,8 +375,8 @@ A self-contained recipe. Each step names the function here that implements it.
 7. **Outer calibration.** Distribution of $C_\text{max}$ over trials;
    $\bar{C}_\text{max}(0.9,\mu)$ = its 90th percentile.
    *(`opt_itvs`, `extremeness_of_opt_itv_stat`, `bar_c_max`.)*
-8. **Limit.** Scan / root-find $\mu$ so observed $C_\text{max}=\bar
-   C_\text{max}(0.9,\mu)$. *(`upper_limit`.)*
+8. **Limit.** Scan / root-find $\mu$ so the observed
+   $C_\text{max}=\bar{C}_\text{max}(0.9,\mu)$. *(`upper_limit`.)*
 9. **Max-gap shortcut.** For the pure max-gap limit, skip MC and solve
    $C_0(x_\text{obs},\mu)=0.9$ with Eq. 2. *(`c0`, `x0`.)*
 
@@ -404,14 +404,14 @@ solve extremeness(mu) = 0.9   ->   mu_upper_limit
 - **The curve is not smooth.** $\bar{C}_\text{max}(0.9,\mu)$ jumps upward each time
   $\mu$ crosses a threshold where intervals with one more event can first become
   the maximum. Threshold condition $C_n(\mu,\mu)=\bar{C}_\text{max}(C,\mu)$ with
-  $C_n(\mu,\mu)=P(\mu,n+1)=\Pr[>n$ events in the whole range$]$. Table I of the
+  $C_n(\mu,\mu)=P(\mu,n+1)=\Pr[{>}n\text{ events in the whole range}]$. Table I of the
   paper lists them: $n=0\to2.303$, $1\to3.890$, $2\to5.800$, $3\to7.491$,
   $4\to9.059$, …. We overlay these as vertical lines in the Fig. 2 reproduction.
 - **Flat at 0.90.** For $2.3026<\mu<3.890$ only $n=0$ can produce $C_\text{max}$
   (intervals with $\ge 1$ event have $C_1(\mu,\mu)=\Pr[{>}1\text{ event}]<0.9$
   below the $\mu=3.890$ threshold, so they cannot set the 90th percentile). Then
   $\bar{C}_\text{max}(0.9,\mu)=C_0(x_0(0.9,\mu),\mu)=0.9$ *exactly* — because
-  $C_0(X,\mu)$ is Uniform$[0,1)$ apart from an atom of mass $e^{-\mu}$ at $1$ (the
+  $C_0(X,\mu)$ is uniform on $[0,1)$ apart from an atom of mass $e^{-\mu}$ at $1$ (the
   zero-event experiments, whose max gap is the whole range), and that atom sits
   above the 90th percentile, which therefore falls at $0.9$. This code reproduces
   the plateau at $0.9000$ (measured), since it computes the same $C_\text{max}$
@@ -429,8 +429,8 @@ For a fixed WIMP mass $M$ the spectrum shape (and thus $\epsilon$) is fixed, and
 counts scale linearly with cross section: $\mu(\sigma,M)=\sigma\,\mu_1(M)$, where
 $\mu_1(M)$ is the expected count per unit $\sigma$ (astrophysics × form factor ×
 exposure). So the upper limit is $\sigma_\text{UL}(M)=\mu_\text{UL}/\mu_1(M)$.
-Walk $\sigma$ (hence $\mu$) up until $C_\text{max}$ reaches $\bar
-C_\text{max}(0.9,\mu)$ (§6), then repeat over a grid of masses to trace the
+Walk $\sigma$ (hence $\mu$) up until $C_\text{max}$ reaches
+$\bar{C}_\text{max}(0.9,\mu)$ (§6), then repeat over a grid of masses to trace the
 exclusion curve. Efficiency point: the uniform Monte-Carlo tables are
 mass-independent and reusable across all $M$; only `spectrum_cdf` changes with
 mass.

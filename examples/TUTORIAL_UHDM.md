@@ -50,8 +50,8 @@ Three facts make this an optimum-interval problem:
 ## Where the usual method breaks
 
 The standard limit for these searches is: *"we observe zero events above
-$q_\text{th}$, so we exclude any coupling predicting $\langle N\rangle \gtrsim
-3$"* (95% CL zero-event Poisson).
+$q_\text{th}$, so we exclude any coupling predicting
+$\langle N\rangle \gtrsim 3$"* (95% CL zero-event Poisson).
 
 That is correct — it is the **zero-event special case of the optimum
 interval**: with no events, the whole window is one gap, and the 95%
