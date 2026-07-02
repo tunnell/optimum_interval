@@ -34,6 +34,10 @@ LINK_REWRITES = [
         'href="uhdm_momentum_kicks.py"',
         f'href="{GITHUB_BLOB}/examples/uhdm_momentum_kicks.py"',
     ),
+    (
+        'href="uhdm_finite_range.ipynb"',
+        f'href="{GITHUB_BLOB}/examples/uhdm_finite_range.ipynb"',
+    ),
 ]
 
 

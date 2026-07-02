@@ -135,9 +135,12 @@ one outlier at 30 TeV (all fiducial numbers, not a real dataset):
   Yellin's $\mu < 2.3$ floor at 90%) — the zero-event limit is already optimal.
 - The optimum interval is conservative by construction: coverage is at least
   95%, never less, whatever the background.
-- Finite mediator mass ($\lambda < \infty$) changes only the *shape* $dR/dq$,
-  not the statistics: swap in the corresponding cross section and rebuild
-  `spectrum_cdf`; the calibration table is reused unchanged.
+- Finite mediator mass ($\lambda < \infty$) changes the *shape* $dR/dq$ — and
+  makes it depend on the coupling itself, so the single-solve `upper_limit`
+  no longer applies directly. The worked notebook
+  [`uhdm_finite_range.ipynb`](uhdm_finite_range.ipynb) handles that case by
+  scanning the coupling and evaluating the extremeness with the package
+  primitives at each grid point.
 - Likewise the halo model: the example uses the simplified Maxwell–Boltzmann
   distribution (no Earth motion; $v_\text{esc}$ enters only as the integration
   cutoff). Upgrading to the full truncated, boosted distribution is again just a

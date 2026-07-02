@@ -16,6 +16,9 @@ venv/
 # Monte-Carlo caches
 *.p
 
+# Local-only material: internal notes, unpublished analysis code, scratch.
+hide/
+
 # Paper source & anything derived from it (copyright S. Yellin / APS) -- kept
 # locally for side-by-side verification, not redistributed in this repo.
 0203002v2.pdf
