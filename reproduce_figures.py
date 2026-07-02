@@ -370,7 +370,9 @@ def explanatory_figures(seed: int) -> None:
     def cdf(e):  # normalized exponential CDF -> uniform [0, 1]
         return (1.0 - np.exp(-e / e0)) / norm
 
-    events_E = np.array([4.0, 9.0, 22.0, 41.0])
+    # Chosen so the cumulants (~0.51, 0.60, 0.90, 0.95) give clearly distinct
+    # gaps in the k-largest schematic.
+    events_E = np.array([7.0, 9.0, 22.0, 29.0])
     events_u = cdf(events_E)
 
     fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4))

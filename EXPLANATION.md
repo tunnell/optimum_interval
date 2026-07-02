@@ -129,10 +129,11 @@ $$
 \epsilon(E)=\frac{1-e^{-E/E_0}}{1-e^{-E_\text{max}/E_0}} .
 $$
 
-Four toy events at $E=\{4,9,22,41\}$ keV map to cumulants
-$\epsilon\approx\{0.33,0.60,0.90,0.98\}$. Prepend the range boundary $0$ and
-append $1$, giving the point list $\{0,\,0.33,\,0.60,\,0.90,\,0.98,\,1\}$ on the
-unit interval. From here on we never need the spectrum again — only this list.
+Four toy events at $E=\{7,9,22,29\}$ keV map to cumulants
+$\epsilon\approx\{0.51,0.60,0.90,0.95\}$. Prepend the range boundary $0$ and
+append $1$, giving the point list $\{0,\,0.51,\,0.60,\,0.90,\,0.95,\,1\}$ on the
+unit interval — the maximum gap is clearly the empty stretch from $0$ to $0.51$.
+From here on we never need the spectrum again — only this list.
 
 In code: the transform is `cumulant_points(events, spectrum_cdf)` in
 `intervals.py`, which sorts, applies the CDF, and adds the $0$ and $1$
