@@ -12,9 +12,9 @@ from collections.abc import Callable
 
 import numpy as np
 
-__all__ = ["spectrum_cdf_from_pdf", "spectrum_cdf_from_samples"]
+from .intervals import SpectrumCdf
 
-CdfCallable = Callable[[np.ndarray], np.ndarray]
+__all__ = ["spectrum_cdf_from_pdf", "spectrum_cdf_from_samples"]
 
 
 def spectrum_cdf_from_pdf(
@@ -22,7 +22,7 @@ def spectrum_cdf_from_pdf(
     e_min: float,
     e_max: float,
     n_grid: int = 2048,
-) -> CdfCallable:
+) -> SpectrumCdf:
     """Normalized CDF on ``[e_min, e_max]`` from a signal density ``pdf``.
 
     ``pdf`` need not be normalized -- only its *shape* matters (the overall rate,
@@ -58,7 +58,7 @@ def spectrum_cdf_from_pdf(
     return cdf
 
 
-def spectrum_cdf_from_samples(energies, cdf_values) -> CdfCallable:
+def spectrum_cdf_from_samples(energies, cdf_values) -> SpectrumCdf:
     """Normalized ``spectrum_cdf`` interpolating tabulated ``(energy, CDF)`` points.
 
     Useful when the CDF is only known at sampled energies (e.g. from a

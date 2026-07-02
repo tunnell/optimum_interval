@@ -50,8 +50,9 @@ def test_vectorized_matches_scalar():
 
 
 def test_c0_correct_at_large_mu():
-    # Regression: a former fixed m-cap made c0 return 0 whenever floor(mu/x) > 60,
-    # which is wrong for large mu with moderate x (C_0 there is O(1), not 0).
+    # Large mu with moderate x has floor(mu/x) large but C_0 of order one; the
+    # series evaluation must not zero it out.  Reference values cross-checked
+    # against brute-force Monte Carlo.
     assert c0(7.0, 200.0) == pytest.approx(0.837, abs=5e-3)
     assert c0(8.5, 500.0) == pytest.approx(0.905, abs=5e-3)
     # x0 must still invert c0 at large mu.

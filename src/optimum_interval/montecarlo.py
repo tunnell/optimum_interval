@@ -1,15 +1,11 @@
 """Monte-Carlo tabulation and the optimum-interval upper-limit solver.
 
-All state that used to live in module-level globals (``itvSizes``, ``optItvs``,
-``mcTrials``) is now held on a single :class:`OptimumIntervalTable` instance.
-Construct one, let it build tables on demand, optionally persist it to disk.
-
-The physics: for a proposed signal with Poisson mean ``mu`` (and no
-background), simulate many experiments, record for each the distribution of
-k-largest interval sizes, and from those build the calibration distribution of
-the C_max statistic.  An upper limit on ``mu`` is the value at which the
-observed C_max sits at the requested confidence quantile of that distribution.
-See ``EXPLANATION.md`` for the full derivation.
+For a proposed signal with Poisson mean ``mu`` (and no background), simulate
+many experiments, record the distribution of k-largest interval sizes, and from
+those build the calibration distribution of the C_max statistic.  The upper
+limit on ``mu`` is the value at which the observed C_max sits at the requested
+confidence quantile of that distribution.  All state lives on
+:class:`OptimumIntervalTable`; see ``EXPLANATION.md`` for the derivation.
 """
 
 from __future__ import annotations
@@ -17,18 +13,13 @@ from __future__ import annotations
 import logging
 import pickle
 from collections import defaultdict
-from collections.abc import Callable
 from pathlib import Path
 
 import numpy as np
 
-from .intervals import cumulant_points, k_largest_intervals
+from .intervals import SpectrumCdf, cumulant_points, k_largest_intervals
 
 log = logging.getLogger(__name__)
-
-DEFAULT_CACHE = "saved_intervals.p"
-
-CdfType = Callable[[np.ndarray], np.ndarray] | None
 
 
 class OptimumIntervalTable:
@@ -128,7 +119,7 @@ class OptimumIntervalTable:
         return float(np.count_nonzero(reference < x) / self.n_trials[mu])
 
     def optimum_interval_statistic(
-        self, events: np.ndarray, mu: float, spectrum_cdf: CdfType = None
+        self, events: np.ndarray, mu: float, spectrum_cdf: SpectrumCdf | None = None
     ) -> float:
         """C_max of a run: the most extreme k-largest interval.
 
@@ -164,7 +155,7 @@ class OptimumIntervalTable:
         self,
         events: np.ndarray,
         confidence: float = 0.9,
-        spectrum_cdf: CdfType = None,
+        spectrum_cdf: SpectrumCdf | None = None,
         n: int = 1000,
         *,
         mu_scan_start: float = 1.0,
@@ -178,13 +169,10 @@ class OptimumIntervalTable:
         :math:`\\bar C_\\mathrm{max}(\\text{confidence}, \\mu)`.
 
         The excess ``extremeness - confidence`` increases with ``mu`` (a larger
-        proposed signal makes the observed emptiness look more anomalous).  We
-        evaluate it on a fixed ``mu`` grid whose tables are **cached** on this
-        instance, then linearly interpolate the zero crossing between the two
-        bracketing grid points.  Because the grid is fixed and cached, the result
-        is deterministic given the generator seed -- unlike a Brent root find,
-        which would re-probe arbitrary ``mu`` with fresh Monte-Carlo noise and
-        scatter the limit by a few percent across seeds.
+        proposed signal makes the observed emptiness look more anomalous).  It is
+        evaluated on a fixed ``mu`` grid whose tables are cached on this instance,
+        and the zero crossing is interpolated between the bracketing grid points,
+        so the result is deterministic given the generator seed.
 
         Parameters
         ----------
@@ -208,9 +196,8 @@ class OptimumIntervalTable:
         Raises
         ------
         RuntimeError
-            If no exclusion is bracketed within the scan range (rather than
-            silently returning a wrong value).  Widen ``mu_scan_start`` /
-            ``mu_scan_stop`` as the message suggests.
+            If no exclusion is bracketed within the scan range; widen
+            ``mu_scan_start`` / ``mu_scan_stop`` as the message suggests.
         """
         events = np.asarray(events, dtype=float)
 
@@ -258,7 +245,7 @@ class OptimumIntervalTable:
     # ------------------------------------------------------------------ #
     # Persistence
     # ------------------------------------------------------------------ #
-    def save(self, path: str | Path = DEFAULT_CACHE) -> None:
+    def save(self, path: str | Path) -> None:
         """Pickle the tables to ``path`` (single dict, one payload)."""
         payload = {
             "itv_sizes": self.itv_sizes,
@@ -270,7 +257,7 @@ class OptimumIntervalTable:
 
     @classmethod
     def load(
-        cls, path: str | Path = DEFAULT_CACHE, rng: np.random.Generator | None = None
+        cls, path: str | Path, rng: np.random.Generator | None = None
     ) -> OptimumIntervalTable:
         """Load tables previously written by :meth:`save`."""
         table = cls(rng=rng)

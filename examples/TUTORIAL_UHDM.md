@@ -23,7 +23,7 @@ $T_\text{obs}$. (Public references for this class of search: Monteiro et al.,
 [arXiv:2007.12067](https://arxiv.org/abs/2007.12067); Amaral et al.,
 [arXiv:2409.03814](https://arxiv.org/abs/2409.03814).)
 
-Three facts make this a textbook optimum-interval problem:
+Three facts make this an optimum-interval problem:
 
 1. **The signal shape in $q$ is known per mass.** For a massless mediator,
    integrating the classical Coulomb-like cross section over a
@@ -44,8 +44,8 @@ Three facts make this a textbook optimum-interval problem:
 3. **The background is real but unmodelable.** Seismic/vibrational transients,
    cryostat events, and cosmic rays produce impulse-like candidates that pile up
    just above threshold, and none of them can be modeled to subtraction
-   precision. This is precisely the "unknown background" the optimum interval
-   was invented for.
+   precision. This is the "unknown background" the optimum interval was
+   invented for.
 
 ## Where the usual method breaks
 
@@ -53,8 +53,8 @@ The standard limit for these searches is: *"we observe zero events above
 $q_\text{th}$, so we exclude any coupling predicting $\langle N\rangle \gtrsim
 3$"* (95% CL zero-event Poisson).
 
-That is correct — and it is exactly the **zero-event special case of the
-optimum interval**: with no events, the whole window is one gap, and the 95%
+That is correct — it is the **zero-event special case of the optimum
+interval**: with no events, the whole window is one gap, and the 95%
 optimum-interval limit is $\mu_\text{UL} = -\ln 0.05 \simeq 3.0$ (the example
 verifies this numerically). But the rule is brittle: the first candidate that
 survives your cuts forces a bad choice —

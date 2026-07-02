@@ -9,7 +9,6 @@ from optimum_interval.intervals import cumulant_points, k_largest_intervals
 
 
 def test_max_gap_zero_events():
-    # Ported from the original inline asserts, now with tolerant float compare.
     sizes = k_largest_intervals(np.array([0.0, 0.1, 0.2, 0.84, 0.85]))
     assert sizes[0] == pytest.approx(0.84 - 0.2)
 
@@ -25,7 +24,7 @@ def test_unsorted_input_gives_same_answer():
 
 
 def test_input_is_not_mutated():
-    # Regression test for the original in-place ``list_of_energies.sort()`` bug.
+    # k_largest_intervals must not sort its input in place.
     events = np.array([0.85, 0.0, 0.1, 0.84, 0.2])
     before = events.copy()
     k_largest_intervals(events)

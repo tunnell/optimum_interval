@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""Regenerate and *verify* the figures for the optimum-interval method.
+"""Regenerate and verify the figures.
 
-Run this to reproduce, from the cleaned library, the one plot the original repo
-produced (Yellin Fig. 2) plus independent cross-checks and the explanatory
-figures used by ``EXPLANATION.md``.  Every reproduction of a *paper* figure is
-saved next to the original (extracted from the arXiv source) so the agreement
-can be seen directly.
+Reproduces Yellin's data figures (Figs. 2-5), a Monte-Carlo-vs-analytic C0
+cross-check, and the explanatory figures used by ``EXPLANATION.md``.  Every
+reproduction of a paper figure is saved next to the original (extracted from
+the arXiv source) so the agreement can be seen directly.
 
 Usage
 -----
-    python reproduce_figures.py --quick     # fast, lower statistics (~1-2 min)
-    python reproduce_figures.py --full      # publication statistics (~10-15 min)
+    python reproduce_figures.py --quick     # low statistics (~5 min)
+    python reproduce_figures.py --full      # publication statistics (~2 h)
 
 Outputs go to ``figures/``.  A deterministic seed makes every run reproducible.
 """
@@ -91,7 +90,7 @@ def side_by_side(ours: Path, paper: Path | None, out: Path, title: str) -> None:
 
 
 # --------------------------------------------------------------------------- #
-# Fig. 2  --  bar_c_max(0.9, mu)  (the plot the original repo produced)
+# Fig. 2  --  bar_c_max(0.9, mu)
 # --------------------------------------------------------------------------- #
 def reproduce_fig2(seed: int, n: int, n_mu: int) -> None:
     import matplotlib.pyplot as plt

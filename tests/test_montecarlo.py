@@ -59,8 +59,7 @@ def test_upper_limit_smoke():
 def test_upper_limit_small_n_experiments():
     """Small-N experiments (the method's target regime) must give sane limits.
 
-    Regression test: the solver used to silently return mu_scan_start (10.0) for
-    0- or 1-event runs.  The 0-event 90% limit should be near the classic ~2.3.
+    The 0-event 90% limit must land near the classic -ln(0.1) ~ 2.3.
     """
     table = OptimumIntervalTable(rng=np.random.default_rng(3))
     zero = table.upper_limit(np.array([]), confidence=0.9, n=4000)
@@ -80,9 +79,7 @@ def test_upper_limit_raises_when_unbracketed():
 def test_upper_limit_deterministic():
     """The interpolated solver is reproducible given the seed.
 
-    The old Brent root find re-probed arbitrary mu with fresh Monte-Carlo noise,
-    so the limit scattered across seeds and was not reproducible; the fixed,
-    cached mu grid makes two identically-seeded tables agree bit-for-bit.
+    Two identically seeded tables must agree bit-for-bit.
     """
     events = np.sort(np.random.default_rng(2).random(25))
     a = OptimumIntervalTable(rng=np.random.default_rng(0)).upper_limit(events, n=800)

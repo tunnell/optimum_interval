@@ -490,8 +490,10 @@ they embed the copyrighted paper figures.
 | module | contents |
 |---|---|
 | `optimum_interval/intervals.py` | `k_largest_intervals`, `cumulant_points` — pure interval geometry |
-| `optimum_interval/analytic.py` | `c0` (Eq. 2), `x0` — analytic max-gap, no MC |
+| `optimum_interval/analytic.py` | `c0` (Eq. 2), `x0`, `poisson_upper_limit`, `max_gap_upper_limit` |
 | `optimum_interval/montecarlo.py` | `OptimumIntervalTable` — MC tables, `bar_c_max`, `upper_limit`, persistence |
+| `optimum_interval/spectra.py` | `spectrum_cdf_from_pdf`, `spectrum_cdf_from_samples` |
+| `optimum_interval/comparison.py` | `ComparisonEngine` — fast per-experiment limits (Figs. 3–4) |
 | `optimum_interval/plotting.py` | `bar_c_max_curve`, `plot_bar_c_max` — Fig. 2 |
 | `reproduce_figures.py` | regenerate every figure above |
 | `tests/` | unit tests incl. the MC-vs-$C_0$ validation |

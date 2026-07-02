@@ -22,11 +22,17 @@ Public API
 ----------
 ``k_largest_intervals`` / ``cumulant_points``
     Pure interval geometry (:mod:`optimum_interval.intervals`).
-``c0`` / ``x0``
-    Analytic max-gap statistic, Yellin Eq. 2 (:mod:`optimum_interval.analytic`).
+``c0`` / ``x0`` / ``max_gap_upper_limit`` / ``poisson_upper_limit``
+    Analytic statistics: Yellin Eq. 2 and the counting limits
+    (:mod:`optimum_interval.analytic`).
 ``OptimumIntervalTable``
-    Monte-Carlo tables and the upper-limit solver
+    Monte-Carlo calibration tables and the upper-limit solver
     (:mod:`optimum_interval.montecarlo`).
+``spectrum_cdf_from_pdf`` / ``spectrum_cdf_from_samples``
+    Build a normalized ``spectrum_cdf`` (:mod:`optimum_interval.spectra`).
+``ComparisonEngine``
+    Fast per-experiment limits for method comparisons
+    (:mod:`optimum_interval.comparison`).
 """
 
 from __future__ import annotations
@@ -34,11 +40,10 @@ from __future__ import annotations
 from .analytic import c0, max_gap_upper_limit, poisson_upper_limit, x0
 from .comparison import ComparisonEngine
 from .intervals import cumulant_points, k_largest_intervals
-from .montecarlo import DEFAULT_CACHE, OptimumIntervalTable
+from .montecarlo import OptimumIntervalTable
 from .spectra import spectrum_cdf_from_pdf, spectrum_cdf_from_samples
 
 __all__ = [
-    "DEFAULT_CACHE",
     "ComparisonEngine",
     "OptimumIntervalTable",
     "c0",
@@ -51,4 +56,4 @@ __all__ = [
     "x0",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

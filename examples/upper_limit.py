@@ -24,26 +24,17 @@ from optimum_interval import (
 )
 
 
-def uniform_signal_limit(events, table, *, confidence=0.9, n=5000):
-    """``mu`` upper limits when the signal is uniform in the observable.
+def limits(events, table, *, spectrum_cdf=None, confidence=0.9, n=5000):
+    """Max-gap (analytic) and optimum-interval (MC) upper limits on ``mu``.
 
-    ``events`` already live on ``[0, 1]`` (uniform signal, or you applied the CDF
-    yourself).  Returns the max-gap (analytic) and optimum-interval (MC) limits.
+    Omit ``spectrum_cdf`` when ``events`` already live on ``[0, 1]`` (uniform
+    signal, or you applied the CDF yourself).
     """
-    max_gap = float(np.diff(cumulant_points(events)).max())
-    return {
-        "max_gap": max_gap_upper_limit(max_gap, confidence),
-        "optimum_interval": table.upper_limit(events, confidence=confidence, n=n),
-    }
-
-
-def shaped_signal_limit(events_x, spectrum_cdf, table, *, confidence=0.9, n=5000):
-    """``mu`` upper limits for a non-uniform signal given its normalized CDF."""
-    max_gap = float(np.diff(cumulant_points(events_x, spectrum_cdf)).max())
+    max_gap = float(np.diff(cumulant_points(events, spectrum_cdf)).max())
     return {
         "max_gap": max_gap_upper_limit(max_gap, confidence),
         "optimum_interval": table.upper_limit(
-            events_x, spectrum_cdf=spectrum_cdf, confidence=confidence, n=n
+            events, spectrum_cdf=spectrum_cdf, confidence=confidence, n=n
         ),
     }
 
@@ -55,12 +46,12 @@ def run(*, n=5000, rng=None):
 
     # (a) Signal uniform in the observable: events already on [0, 1].
     uniform_events = np.array([0.08, 0.11, 0.55, 0.58, 0.62, 0.95])
-    uniform = uniform_signal_limit(uniform_events, table, n=n)
+    uniform = limits(uniform_events, table, n=n)
 
     # (b) Signal with a known falling shape on [0, 10] (any observable/units).
     cdf = spectrum_cdf_from_pdf(lambda x: np.exp(-x / 3.0), 0.0, 10.0)
     shaped_events = np.array([0.3, 0.5, 0.9, 1.4, 6.0, 8.5])
-    shaped = shaped_signal_limit(shaped_events, cdf, table, n=n)
+    shaped = limits(shaped_events, table, spectrum_cdf=cdf, n=n)
 
     return {"uniform": uniform, "shaped": shaped}
 
@@ -73,10 +64,7 @@ def main():
             f"mu_UL(optimum interval) = {lim['optimum_interval']:.2f}"
         )
     print(
-        "\nmu_UL is the largest expected signal count consistent with the data at "
-        "90% CL; a model predicting more is excluded. To turn mu into a rate or "
-        "cross section, divide by exposure x efficiency -- see "
-        "examples/dark_matter_exclusion.py."
+        "\nSee TUTORIAL.md; for rate/cross-section conversion, dark_matter_exclusion.py."
     )
 
 

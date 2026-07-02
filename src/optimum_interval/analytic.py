@@ -40,9 +40,8 @@ __all__ = ["c0", "max_gap_upper_limit", "poisson_upper_limit", "x0"]
 # A term whose magnitude exceeds exp(_LOG_HUGE) ~ 1e13 means the alternating
 # series is losing > 13 significant digits to cancellation.  That happens only
 # deep in the C_0 ~ 0 tail (the requested gap x is far below the typical maximum
-# gap), where the true value rounds to 0 -- so we return 0.0 there rather than
-# form a garbage (or overflowing) sum.  This replaces a former fixed m-cap that
-# wrongly zeroed valid large-mu evaluations.
+# gap), where the true value rounds to 0 -- so return 0.0 rather than form a
+# garbage sum.
 _LOG_HUGE = 30.0
 
 

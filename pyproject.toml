@@ -33,11 +33,11 @@ classifiers = [
 dependencies = [
     "numpy",
     "scipy",
-    "matplotlib",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-cov", "hypothesis", "ruff", "build"]
+plot = ["matplotlib"]
+dev = ["matplotlib", "pytest", "pytest-cov", "hypothesis", "ruff", "build"]
 docs = ["mkdocs-material", "mkdocstrings[python]"]
 
 [project.urls]

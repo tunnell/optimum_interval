@@ -5,7 +5,7 @@ A levitated-sensor experiment (e.g. a Meissner-levitated magnet) searches for
 ultraheavy dark matter (UHDM) coupled to neutron number through a long-range
 Yukawa "fifth force".  A DM particle flying past delivers a single impulse, and
 each candidate event has one measured observable: the momentum transfer ``q``.
-That makes it a textbook optimum-interval problem:
+That makes it an optimum-interval problem:
 
 - observable per event: kick momentum ``q`` on ``[q_th, q_max(m_DM)]``;
 - known signal *shape*: for a massless mediator the differential rate is
@@ -197,12 +197,7 @@ def main():
             f"{r['mu_poisson']:>8.2f} {r['alpha_optint']:>10.2e} "
             f"{r['alpha_poisson']:>11.2e}"
         )
-    print(
-        "\nWith candidates present, the optimum interval limits from the empty "
-        "high-q region (no background model needed); Poisson counting takes the "
-        "full multiplicity hit. Quadratic coupling: a 2x better mu is sqrt(2) in "
-        "alpha_n. See TUTORIAL_UHDM.md."
-    )
+    print("\nSee TUTORIAL_UHDM.md for the walkthrough.")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 """Fast golden-value regression tests distilled from reproduce_figures.py.
 
-These lock the load-bearing reproduction facts into CI at reduced statistics,
-without committing the (copyrighted) paper figures.
+These lock the load-bearing reproduction facts into the test suite at reduced
+statistics, without committing the (copyrighted) paper figures.
 """
 
 import numpy as np

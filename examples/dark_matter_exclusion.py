@@ -137,10 +137,7 @@ def main():
             f"{r['mass']:>9.1f} {r['mu_maxgap']:>13.2f} {r['mu_optint']:>13.2f} "
             f"{r['sigma_optint']:>14.3f}"
         )
-    print(
-        "\nBoth limits used only the signal shape -- no background model -- and the "
-        "same MC table served every mass. See TUTORIAL.md for the walkthrough."
-    )
+    print("\nSee TUTORIAL.md for the walkthrough.")
 
 
 if __name__ == "__main__":

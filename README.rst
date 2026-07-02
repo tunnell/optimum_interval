@@ -4,14 +4,12 @@ optimum_interval
 
 |docs| |python| |license| |doi|
 
-A small, tested Python implementation of **Yellin's optimum-interval method**
-for setting frequentist upper limits in the presence of an unknown, non-
-subtractable background — the technique used by direct-detection dark-matter
-experiments (CDMS, XENON, LZ, …) to bound a signal cross section using only the
-signal *shape*, with no background model and no binning.
+Yellin's maximum-gap and optimum-interval methods: frequentist upper limits on
+a signal rate in the presence of an unknown, non-subtractable background, using
+only the signal *shape* — no background model, no binning. This is the standard
+technique in direct-detection dark-matter searches (CDMS, XENON, LZ, …).
 
-Originally written by Jelle Aalbers and Christopher Tunnell at Nikhef (NL);
-cleaned up, packaged, tested and documented here.
+Originally written by Jelle Aalbers and Christopher Tunnell at Nikhef.
 
 Method reference: S. Yellin, *"Finding an Upper Limit in the Presence of Unknown
 Background"*, Phys. Rev. **D66** (2002) 032005,
@@ -100,13 +98,18 @@ distribution reproduces the analytic :math:`C_0`.
 Scope and related work
 ======================
 
-This is a compact, readable reference implementation of Yellin's maximum-gap and
-optimum-interval methods, focused on correctness, reproducibility, and pedagogy
-(see ``EXPLANATION.md``). It is not a full direct-detection framework: for a real
-analysis you supply the recoil-spectrum model — e.g. via
-`wimprates <https://pypi.org/project/wimprates/>`_ (by a co-author here) — and
-pass its CDF as ``spectrum_cdf`` (see ``examples/TUTORIAL.md``). Yellin's original
-C/Fortran routines and tables accompanied the paper (arXiv:physics/0203002).
+A reference implementation of the statistics, not a full direct-detection
+framework: you supply the signal-spectrum model — e.g. via
+`wimprates <https://pypi.org/project/wimprates/>`_ — and pass its CDF as
+``spectrum_cdf`` (see ``examples/TUTORIAL.md``). Yellin's original C/Fortran
+routines and tables accompanied the paper.
+
+Citing
+======
+
+If this software is useful in your work, cite it via the Zenodo DOI
+(``CITATION.cff`` has the metadata; GitHub's "Cite this repository" button uses
+it) and cite Yellin's method paper, Phys. Rev. D66 (2002) 032005.
 
 Package layout
 ==============
@@ -117,6 +120,7 @@ Package layout
      intervals.py             pure interval geometry (k-largest, cumulants)
      analytic.py              analytic C0, x0, Poisson & max-gap limits
      montecarlo.py            OptimumIntervalTable + upper-limit solver
+     spectra.py               spectrum_cdf helpers
      comparison.py            ComparisonEngine for method comparison (Figs. 3-4)
      plotting.py              Fig. 2 helpers
    reproduce_figures.py       regenerate & verify every figure

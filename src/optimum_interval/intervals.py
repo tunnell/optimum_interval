@@ -15,12 +15,15 @@ from collections.abc import Callable
 
 import numpy as np
 
-__all__ = ["cumulant_points", "k_largest_intervals"]
+__all__ = ["SpectrumCdf", "cumulant_points", "k_largest_intervals"]
+
+# A normalized signal CDF: maps event positions onto cumulants in [0, 1].
+SpectrumCdf = Callable[[np.ndarray], np.ndarray]
 
 
 def k_largest_intervals(
     points: np.ndarray,
-    spectrum_cdf: Callable[[np.ndarray], np.ndarray] | None = None,
+    spectrum_cdf: SpectrumCdf | None = None,
 ) -> dict[int, float]:
     """Size of the largest interval containing exactly ``k`` events, for each ``k``.
 
@@ -76,7 +79,7 @@ def k_largest_intervals(
 
 def cumulant_points(
     events: np.ndarray,
-    spectrum_cdf: Callable[[np.ndarray], np.ndarray] | None = None,
+    spectrum_cdf: SpectrumCdf | None = None,
 ) -> np.ndarray:
     """Map observed events to cumulant space and append the range endpoints.
 
@@ -86,7 +89,7 @@ def cumulant_points(
     boundaries 0 and 1 (which act as interval delimiters exactly like events).
 
     The Monte-Carlo path builds equivalent point lists directly (interior
-    uniforms plus 0 and 1), so both paths are perfectly consistent.
+    uniforms plus 0 and 1), so the two paths are consistent.
 
     Parameters
     ----------
