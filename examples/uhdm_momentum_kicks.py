@@ -103,13 +103,13 @@ def coupling_limit(mu_ul: float, m_dm: float) -> float:
     return float(np.sqrt(mu_ul / (rate_alpha1(m_dm) * T_OBS_S)) / N_NEUTRONS)
 
 
-def run(*, n=4000, n_masses=24, make_plot=False, rng=None):
+def run(*, n=4000, n_masses=32, make_plot=False, rng=None):
     """Sweep DM masses; return per-mass mu and alpha_n limits for three methods."""
     rng = np.random.default_rng(0) if rng is None else rng
     table = OptimumIntervalTable(rng=rng)  # one calibration reused for every mass
 
     mu_zero_event = poisson_upper_limit(0, CONFIDENCE)  # the "<N> ~ 3" benchmark
-    masses = np.geomspace(1.1 * MASS_FLOOR, 1e12, n_masses)
+    masses = np.geomspace(1.1 * MASS_FLOOR, 1.22e19, n_masses)  # up to m_Planck
 
     rows = []
     for m in masses:
@@ -145,7 +145,7 @@ def _plot_exclusion(rows):
     a_id = np.array([r["alpha_zero_event"] for r in rows])
 
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
-    ax.fill_between(m, a_oi, 1e-2, color="#1f77b4", alpha=0.12, lw=0)
+    ax.fill_between(m, a_oi, 1.0, color="#1f77b4", alpha=0.12, lw=0)
     ax.plot(
         m, a_oi, "-", color="#1f77b4", lw=2, label="optimum interval (with candidates)"
     )
@@ -163,7 +163,7 @@ def _plot_exclusion(rows):
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.set_xlim(m.min(), m.max())
-    ax.set_ylim(a_id.min() / 3, a_po.max() * 5)
+    ax.set_ylim(a_id.min() / 3, 1.0)
     ax.set_xlabel(r"Dark matter mass  $m_{\rm DM}$  [GeV]")
     ax.set_ylabel(r"95% CL upper limit on coupling per neutron  $\alpha_n$")
     ax.set_title("Momentum-kick exclusion: optimum interval vs counting (toy)")
