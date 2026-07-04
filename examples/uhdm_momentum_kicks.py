@@ -41,7 +41,8 @@ from optimum_interval import (
 C_KM_S = 299792.458
 V0 = 220.0 / C_KM_S  # halo velocity dispersion parameter
 VESC = 544.0 / C_KM_S  # galactic escape velocity
-RHO_DM = 3.07e-42  # local DM density, 0.4 GeV/cm^3 in GeV^4
+RHO_DM = 2.3e-42  # total local DM density, 0.3 GeV/cm^3 in GeV^4
+F_X = 0.1  # fraction of local DM in this species (evades self-interaction constraints)
 GEV_PER_S = 1.519e24  # 1 GeV of rate = 1.519e24 s^-1  (hbar = 1)
 
 Q_TH = 8400.0  # momentum threshold [GeV]  (~4.5e-15 kg m/s)
@@ -69,7 +70,7 @@ def drdq_alpha1(q, m_dm):
     Maxwell-Boltzmann halo; natural units throughout.
     """
     q = np.asarray(q, dtype=float)
-    n_dm = RHO_DM / m_dm
+    n_dm = F_X * RHO_DM / m_dm  # this species is a fraction f_X of local DM
     velocity_factor = np.exp(-((q / (2.0 * m_dm * V0)) ** 2)) - np.exp(
         -((VESC / V0) ** 2)
     )
