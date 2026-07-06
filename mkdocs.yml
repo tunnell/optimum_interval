@@ -24,6 +24,7 @@ nav:
   - Home: index.md
   - Tutorial: tutorial.md
   - Momentum kicks (UHDM): uhdm.md
+  - Parameter scans: scanning.md
   - Explanation: explanation.md
   - API reference: api.md
 

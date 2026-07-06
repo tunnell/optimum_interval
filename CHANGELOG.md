@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 (2026-07-06)
+
+- New `optimum_interval.scanning` module: the parameter-scan pattern for
+  spectra whose shape depends on the parameter being limited
+  (`scan_extremeness`, `spectrum_from_rate`, `excluded_interval`,
+  `new_table`, `round_log`), with a docs page. Previously this logic lived
+  only in tutorials and downstream analyses.
+- The finite-range UHDM tutorial now uses the scanning API instead of
+  hand-rolling the loop.
+
 ## 0.2.0 (2026-07-02)
 
 - Deterministic `upper_limit`: fixed cached mu grid with interpolated crossing;

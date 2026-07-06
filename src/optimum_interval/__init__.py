@@ -30,6 +30,9 @@ Public API
     (:mod:`optimum_interval.montecarlo`).
 ``spectrum_cdf_from_pdf`` / ``spectrum_cdf_from_samples``
     Build a normalized ``spectrum_cdf`` (:mod:`optimum_interval.spectra`).
+``scan_extremeness`` / ``excluded_interval`` / ``spectrum_from_rate``
+    Parameter scans when the spectrum shape depends on the parameter being
+    limited (:mod:`optimum_interval.scanning`).
 ``ComparisonEngine``
     Fast per-experiment limits for method comparisons
     (:mod:`optimum_interval.comparison`).
@@ -41,6 +44,13 @@ from .analytic import c0, max_gap_upper_limit, poisson_upper_limit, x0
 from .comparison import ComparisonEngine
 from .intervals import cumulant_points, k_largest_intervals
 from .montecarlo import OptimumIntervalTable
+from .scanning import (
+    excluded_interval,
+    new_table,
+    round_log,
+    scan_extremeness,
+    spectrum_from_rate,
+)
 from .spectra import spectrum_cdf_from_pdf, spectrum_cdf_from_samples
 
 __all__ = [
@@ -48,12 +58,17 @@ __all__ = [
     "OptimumIntervalTable",
     "c0",
     "cumulant_points",
+    "excluded_interval",
     "k_largest_intervals",
     "max_gap_upper_limit",
+    "new_table",
     "poisson_upper_limit",
+    "round_log",
+    "scan_extremeness",
     "spectrum_cdf_from_pdf",
     "spectrum_cdf_from_samples",
+    "spectrum_from_rate",
     "x0",
 ]
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
